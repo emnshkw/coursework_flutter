@@ -1,6 +1,7 @@
 import 'package:coursework/api.dart';
 import 'package:coursework/pages/groups_page.dart';
 import 'package:coursework/pages/landing_page.dart';
+import 'package:coursework/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:coursework/functions.dart';
 
@@ -91,6 +92,31 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     right: convert_px_to_adapt_width(11)),
                 child: Column(
                   children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => MainPage(),
+                            transitionDuration: Duration(milliseconds: 300),
+                            transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding:
+                        EdgeInsets.only(left: convert_px_to_adapt_width(15)),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Расписание',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: convert_px_to_adapt_height(18)),
+                          ),
+                        ),
+                      ),
+                    ),
                     Divider(
                       color: Colors.white,
                     ),
