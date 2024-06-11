@@ -52,7 +52,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
         children: [
           Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(top: convert_px_to_adapt_height(30)),
+            padding: EdgeInsets.only(top: convert_px_to_adapt_height(15)),
             width: MediaQuery.of(context).size.width,
             child: TextField(
               controller: controller,
@@ -78,8 +78,8 @@ class _AddGroupPageState extends State<AddGroupPage> {
                       width: convert_px_to_adapt_width(2)),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius:
-                      BorderRadius.circular(convert_px_to_adapt_width(20)),
+                  // borderRadius:
+                  //     BorderRadius.circular(convert_px_to_adapt_width(20)),
                   borderSide: BorderSide(
                       color: Color(0xff00275E),
                       width: convert_px_to_adapt_width(1)),
@@ -266,7 +266,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
                 );
               },
               child: Text(
-                'Просмотр таблицы учеников',
+                'Просмотр таблицы студентов',
                 style: TextStyle(color: Colors.white),
               )),
         ],

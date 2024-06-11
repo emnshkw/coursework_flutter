@@ -38,6 +38,7 @@ dependencies:
   permission_handler: ^11.0.1
   dynamic_table: ^0.0.1-beta.2
   editable: ^2.0.0
+  flutter_colorpicker: ^1.1.0
 
 dev_dependencies:
   flutter_test:

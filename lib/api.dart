@@ -177,8 +177,23 @@ Future<Response> get_user_data() async {
   return response;
 }
 
+Future<Response> addLessonType(String lessonType,String hexColor) async {
+  final body = {
+    'lesson_type':lessonType,
+    'color':hexColor
+  };
+  final token = await getToken();
+  final jsonString = json.encode(body);
+  final response = await post(
+      Uri.parse('$urlStart/api/v1/auth/user/'),
+      body: jsonString,
+      headers: {'Authorization': "Token $token",
+        'Content-Type': 'application/json',
+        'charset': 'UTF-8',});
+  return response;
+}
+
 Future<Response> getGroups() async {
-  print('$urlStart/api/v1/groups/');
   final token = await getToken();
   final response = await get(
       Uri.parse('$urlStart/api/v1/groups/'),
@@ -235,6 +250,72 @@ Future<Response> deleteGroup(int id) async {
   final response = await delete(
       Uri.parse(
           '$urlStart/api/v1/groups/$id/'),
+      headers: {
+        'Authorization': "Token $token",
+        'Content-Type': 'application/json',
+        'charset': 'UTF-8',
+      });
+  return response;
+}
+
+Future<Response> getLessons() async {
+  final token = await getToken();
+  final response = await get(
+      Uri.parse('$urlStart/api/v1/lessons/'),
+      headers: {'Authorization': "Token $token"});
+  return response;
+}
+
+Future<Response> addLesson(
+    String lesson_title,String lessonType,String color,String place,String date,int group_id,String time) async {
+  final body = {
+    'lesson_title':lesson_title,
+    'place':place,
+    'group_id':group_id,
+    'date':'$date $time',
+    'lesson_type':'$lessonType~$color'
+  };
+  final token = await getToken();
+  final jsonString = json.encode(body);
+  final response = await post(
+      Uri.parse(
+          '$urlStart/api/v1/lessons/'),
+      body: jsonString,
+      headers: {
+        'Authorization': "Token $token",
+        'Content-Type': 'application/json',
+        'charset': 'UTF-8',
+      });
+  return response;
+}
+Future<Response> editLesson(
+    String lesson_title,String lessonType,String color,String place,String date,int group_id,String time) async {
+  final body = {
+    'lesson_title':lesson_title,
+    'place':place,
+    'group_id':group_id,
+    'date':'$date $time',
+    'lesson_type':'$lessonType~$color'
+  };
+  final token = await getToken();
+  final jsonString = json.encode(body);
+  final response = await put(
+      Uri.parse(
+          '$urlStart/api/v1/lessons/'),
+      body: jsonString,
+      headers: {
+        'Authorization': "Token $token",
+        'Content-Type': 'application/json',
+        'charset': 'UTF-8',
+      });
+  return response;
+}
+Future<Response> deleteLesson(int id) async {
+
+  final token = await getToken();
+  final response = await delete(
+      Uri.parse(
+          '$urlStart/api/v1/lessons/$id/'),
       headers: {
         'Authorization': "Token $token",
         'Content-Type': 'application/json',

@@ -10,9 +10,9 @@ MaterialApp MyApp(){
   return MaterialApp(
     theme: ThemeData(
         fontFamily: 'Ubuntu',
-        primaryColor: Color(0xff0e59c9),
+        primaryColor: Color(0xff00275E),
         colorScheme: const ColorScheme.light(
-          primary: Color(0xff0e59c9),
+          primary: Color(0xff00275E),
         ),
         scrollbarTheme: ScrollbarThemeData(
             thumbVisibility: MaterialStateProperty.all(true),
