@@ -40,7 +40,6 @@ class LandingPage extends StatelessWidget {
       }
       return token;
     }
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,

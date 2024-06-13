@@ -156,138 +156,168 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  List<dynamic> getLessonsInDay(List<dynamic>data,DateTime day){
+  List<dynamic> getLessonsInDay(List<dynamic> data, DateTime day) {
     String dayStr = convertDateTimeToString(day);
-    List<Map<String,dynamic>> lessons = [];
-    for (Map<String,dynamic> lesson in data){
-      if (lesson['date'].split(' ')[0] == dayStr){
+    List<Map<String, dynamic>> lessons = [];
+    for (Map<String, dynamic> lesson in data) {
+      if (lesson['date'].split(' ')[0] == dayStr) {
         lessons.add(lesson);
       }
     }
     return lessons;
   }
 
-
   FutureBuilder days() {
-    return FutureBuilder(future: getLessons(), builder: (BuildContext context,AsyncSnapshot snapshot){
-      if (snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-        Map<String, dynamic> data = convert_snapshot_to_map(snapshot);
+    return FutureBuilder(
+        future: getLessons(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data = convert_snapshot_to_map(snapshot);
 
-        List<GestureDetector> weekDays = [];
-        DateTime startWeek = getWeekStart(selectedDay);
-        DateTime endWeek = getWeekEnd(selectedDay);
-        while (!startWeek.isAfter(endWeek)) {
-          List<dynamic> curDayLessons = getLessonsInDay(data['lessons'],startWeek);
-          List<Widget> circles = [];
-          for (Map<String,dynamic> lesson in curDayLessons){
-            if (circles.length>=6){
-              circles.add(Icon(Icons.more_horiz,size: convert_px_to_adapt_height(10),));
-              break;
-            }
-            else{
-              circles.add(CircleAvatar(backgroundColor: Color(int.parse(lesson['lesson_type'].split('~')[1])),radius: convert_px_to_adapt_width(2.5),));
+            List<GestureDetector> weekDays = [];
+            DateTime startWeek = getWeekStart(selectedDay);
+            DateTime endWeek = getWeekEnd(selectedDay);
+            while (!startWeek.isAfter(endWeek)) {
+              List<Widget> circles = [];
+              try {
+                List<dynamic> curDayLessons =
+                    getLessonsInDay(data['lessons'], startWeek);
+                for (Map<String, dynamic> lesson in curDayLessons) {
+                  if (circles.length >= 6) {
+                    circles.add(Icon(
+                      Icons.more_horiz,
+                      size: convert_px_to_adapt_height(10),
+                    ));
+                    break;
+                  } else {
+                    circles.add(CircleAvatar(
+                      backgroundColor:
+                          Color(int.parse(lesson['lesson_type'].split('~')[1])),
+                      radius: convert_px_to_adapt_height(2.5),
+                    ));
+                  }
+                  circles.add(Padding(
+                      padding: EdgeInsets.only(
+                          bottom: convert_px_to_adapt_height(2))));
+                }
+              } catch (e) {
+                circles = [];
+              }
 
+              String day = startWeek.day.toString();
+              day = day.length == 1 ? '0$day' : day;
+              DateTime showedDay = startWeek;
+              weekDays.add(GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedDay = showedDay;
+                  });
+                },
+                child: Container(
+                  height: convert_px_to_adapt_height(45),
+                  width: convert_px_to_adapt_width(45),
+                  decoration: BoxDecoration(
+                      color: !startWeek.isAtSameMomentAs(selectedDay)
+                          ? Color(0xffE4E4E4)
+                          : Colors.white,
+                      border: Border.all(
+                        color: Color(0xff00275E),
+                      ),
+                      borderRadius:
+                          BorderRadius.circular(convert_px_to_adapt_width(10))),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.only(left: convert_px_to_adapt_width(5)),
+                        child: Text(
+                          day,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(
+                            right: convert_px_to_adapt_width(5),
+                            top: convert_px_to_adapt_height(5)),
+                        child: Column(
+                          children: circles,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ));
+              startWeek = startWeek.add(Duration(days: 1));
             }
-            circles.add(Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(2))));
+            return Container(
+              padding: EdgeInsets.only(
+                  top: convert_px_to_adapt_height(20),
+                  left: convert_px_to_adapt_width(15),
+                  right: convert_px_to_adapt_width(15)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: weekDays,
+              ),
+            );
+          } else {
+            List<GestureDetector> weekDays = [];
+            DateTime startWeek = getWeekStart(selectedDay);
+            DateTime endWeek = getWeekEnd(selectedDay);
+            while (!startWeek.isAfter(endWeek)) {
+              String day = startWeek.day.toString();
+              day = day.length == 1 ? '0$day' : day;
+              DateTime showedDay = startWeek;
+              weekDays.add(GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedDay = showedDay;
+                  });
+                },
+                child: Container(
+                  height: convert_px_to_adapt_height(45),
+                  width: convert_px_to_adapt_width(45),
+                  decoration: BoxDecoration(
+                      color: !startWeek.isAtSameMomentAs(selectedDay)
+                          ? Color(0xffE4E4E4)
+                          : Colors.white,
+                      border: Border.all(
+                        color: Color(0xff00275E),
+                      ),
+                      borderRadius:
+                          BorderRadius.circular(convert_px_to_adapt_width(10))),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.only(left: convert_px_to_adapt_width(5)),
+                        child: Text(
+                          day,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ));
+              startWeek = startWeek.add(Duration(days: 1));
+            }
+            return Container(
+              padding: EdgeInsets.only(
+                  top: convert_px_to_adapt_height(20),
+                  left: convert_px_to_adapt_width(15),
+                  right: convert_px_to_adapt_width(15)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: weekDays,
+              ),
+            );
           }
-          String day = startWeek.day.toString();
-          day = day.length == 1 ? '0$day' : day;
-          DateTime showedDay = startWeek;
-          weekDays.add(GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedDay = showedDay;
-              });
-            },
-            child: Container(
-              height: convert_px_to_adapt_height(45),
-              width: convert_px_to_adapt_width(45),
-              decoration: BoxDecoration(
-                  color: !startWeek.isAtSameMomentAs(selectedDay)
-                      ? Color(0xffE4E4E4)
-                      : Colors.white,
-                  border: Border.all(
-                    color: Color(0xff00275E),
-                  ),
-                  borderRadius:
-                  BorderRadius.circular(convert_px_to_adapt_width(10))),
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(day,textAlign: TextAlign.start,),
-                  Container(
-                    padding: EdgeInsets.only(right: convert_px_to_adapt_width(5),top: convert_px_to_adapt_height(5)),
-                    child: Column(children: circles,),
-                  )
-                ],
-              ),
-            ),
-          ));
-          startWeek = startWeek.add(Duration(days: 1));
-        }
-        return Container(
-          padding: EdgeInsets.only(
-              top: convert_px_to_adapt_height(20),
-              left: convert_px_to_adapt_width(15),
-              right: convert_px_to_adapt_width(15)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: weekDays,
-          ),
-        );
-
-      }else{
-        List<GestureDetector> weekDays = [];
-        DateTime startWeek = getWeekStart(selectedDay);
-        DateTime endWeek = getWeekEnd(selectedDay);
-        while (!startWeek.isAfter(endWeek)) {
-          String day = startWeek.day.toString();
-          day = day.length == 1 ? '0$day' : day;
-          DateTime showedDay = startWeek;
-          weekDays.add(GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedDay = showedDay;
-              });
-            },
-            child: Container(
-              height: convert_px_to_adapt_height(45),
-              width: convert_px_to_adapt_width(45),
-              decoration: BoxDecoration(
-                  color: !startWeek.isAtSameMomentAs(selectedDay)
-                      ? Color(0xffE4E4E4)
-                      : Colors.white,
-                  border: Border.all(
-                    color: Color(0xff00275E),
-                  ),
-                  borderRadius:
-                  BorderRadius.circular(convert_px_to_adapt_width(10))),
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(day,textAlign: TextAlign.start,)
-                ],
-              ),
-            ),
-          ));
-          startWeek = startWeek.add(Duration(days: 1));
-        }
-        return Container(
-          padding: EdgeInsets.only(
-              top: convert_px_to_adapt_height(20),
-              left: convert_px_to_adapt_width(15),
-              right: convert_px_to_adapt_width(15)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: weekDays,
-          ),
-        );
-
-      }
-    }
-    );
+        });
   }
 
   Container lessonBtn(Map<String, dynamic> lessonData) {
@@ -352,36 +382,57 @@ class _MainPageState extends State<MainPage> {
               child: Column(
                 children: [
                   Padding(
-                    padding:
-                        EdgeInsets.only(left: convert_px_to_adapt_width(15),top: convert_px_to_adapt_height(15)),
+                    padding: EdgeInsets.only(
+                        left: convert_px_to_adapt_width(15),
+                        top: convert_px_to_adapt_height(15)),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         lessonData['lesson_type'].split('~')[0],
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: convert_px_to_adapt_height(20)
-                        ),
+                            fontSize: convert_px_to_adapt_height(20)),
                       ),
                     ),
                   ),
-                  Padding(padding: EdgeInsets.only(left: convert_px_to_adapt_width(15),right: convert_px_to_adapt_width(15)),child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(lessonData['lesson_title'],style: TextStyle(
-                        color: Colors.black,
-                        fontSize: convert_px_to_adapt_height(20),
-                        fontWeight: FontWeight.bold
-                      ),),
-                      Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(80))),
-                      Text('${lessonData['group_number']} (${lessonData['group_name']})')
-                    ],
-                  ),)
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: convert_px_to_adapt_width(15),
+                        right: convert_px_to_adapt_width(15)),
+                    child: Container(
+                      width: convert_px_to_adapt_width(
+                          MediaQuery.of(context).size.width / 1.5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: Text(
+                              lessonData['lesson_title'],
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: convert_px_to_adapt_height(20),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: convert_px_to_adapt_height(80))),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: Text(
+                                '${lessonData['group_number']} (${lessonData['group_name']})'),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
           ),
-          Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(25)))
+          Padding(
+              padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(25)))
         ],
       ),
     );
@@ -396,23 +447,27 @@ class _MainPageState extends State<MainPage> {
           if (snapshot.hasData &&
               snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = convert_snapshot_to_map(snapshot);
-            lessonsData = data['lessons'];
             List<Widget> lessonBtns = [];
             if (data['status'] == 'success') {
+              lessonsData = data['lessons'];
               for (Map<String, dynamic> lessonData in data['lessons']) {
                 if (lessonData['date'].split(' ')[0] ==
                     convertDateTimeToString(selectedDay)) {
                   lessonBtns.add(lessonBtn(lessonData));
-                  lessonBtns.add(Padding(padding: EdgeInsets.only(
-                      bottom: convert_px_to_adapt_height(15))));
+                  lessonBtns.add(Padding(
+                      padding: EdgeInsets.only(
+                          bottom: convert_px_to_adapt_height(15))));
                 }
               }
               return Column(
                 children: lessonBtns,
               );
-            }
-            else{
-              return Text(data['message'],textAlign:TextAlign.center,style: TextStyle(fontSize: convert_px_to_adapt_height(40)),);
+            } else {
+              return Text(
+                data['message'],
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: convert_px_to_adapt_height(40)),
+              );
             }
           } else {
             return Column(
@@ -453,7 +508,8 @@ class _MainPageState extends State<MainPage> {
     11: "Ноября",
     12: "Декабря"
   };
-  List<dynamic> lessonsData=[];
+  List<dynamic> lessonsData = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

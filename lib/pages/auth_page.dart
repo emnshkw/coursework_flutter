@@ -7,7 +7,6 @@ import 'package:coursework/api.dart';
 import 'package:coursework/pages/otp_page.dart';
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({super.key});
 
   @override
   State<AuthPage> createState() => _AuthPageState();
@@ -18,12 +17,6 @@ class _AuthPageState extends State<AuthPage> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // initFirebase();
-  }
 
   double convert_px_to_adapt_width(double px) {
     return MediaQuery.of(context).size.width / 392 * px;
@@ -246,15 +239,6 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  GestureDetector forget_password() {
-    return GestureDetector(
-      child: Text(
-        'Забыл пароль',
-        style: TextStyle(
-            color: Color(0xffB8B8B8), fontSize: convert_px_to_adapt_height(15)),
-      ),
-    );
-  }
 
   ElevatedButton regBtn() {
     return ElevatedButton(
