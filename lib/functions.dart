@@ -17,6 +17,43 @@ String convertDateTimeToString(DateTime date){
 return converted;
 }
 
+DateTime convertStringToDateTime(String date){
+  int year = int.parse(date.split('.')[2]);
+  int month = int.parse(date.split('.')[1]);
+  int day = int.parse(date.split('.')[0]);
+  return DateTime(year,month,day);
+}
+
+String validateTime(String time){
+  try {
+    String start = time.split('-')[0];
+    String end = time.split('-')[1];
+    try{
+      DateTime startTime = DateTime(2024,1,1,int.parse(start.split(':')[0]),int.parse(start.split(':')[1]));
+      try{
+        DateTime endTime = DateTime(2024,1,1,int.parse(end.split(':')[0]),int.parse(end.split(':')[1]));
+        if (startTime.isAfter(endTime) || startTime.isAtSameMomentAs(endTime)){
+          return "Время указано неправильно! Конец занятия должен быть после начала";
+        }
+        else{
+          return "success";
+        }
+      }
+      catch(e){
+        return "Время конца занятия указано неправильно. Следуйте указанному формату\n(формат \"XX:XX - XX:XX\")";
+      }
+    }
+    catch(e){
+      return "Время начала занятия указано неправильно. Следуйте указанному формату\n(формат \"XX:XX - XX:XX\"";
+    }
+  }
+  catch(e){
+    return "Время указано неверно. Разделите его с помощью \"-\"";
+  }
+  return '';
+}
+
+
 void addItemsToProfile(
     String key,String value) {
   final storage = LocalStorage('profile_storage');

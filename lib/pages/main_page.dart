@@ -1,6 +1,7 @@
 import 'package:coursework/drawer.dart';
 import 'package:coursework/functions.dart';
 import 'package:coursework/pages/add_lessons_page.dart';
+import 'package:coursework/pages/lesson_page.dart';
 import 'package:flutter/material.dart';
 import 'package:coursework/api.dart';
 
@@ -143,7 +144,11 @@ class _MainPageState extends State<MainPage> {
                 borderRadius:
                     BorderRadius.circular(convert_px_to_adapt_width(10))),
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                setState(() {
+                  filtersOpened = !filtersOpened;
+                });
+              },
               child: Icon(
                 Icons.filter_alt_outlined,
                 color: Color(0xff00275E),
@@ -184,23 +189,25 @@ class _MainPageState extends State<MainPage> {
                 List<dynamic> curDayLessons =
                     getLessonsInDay(data['lessons'], startWeek);
                 for (Map<String, dynamic> lesson in curDayLessons) {
-                  if (circles.length >= 6) {
-                    circles.add(Icon(
-                      Icons.more_horiz,
-                      size: convert_px_to_adapt_height(10),
-                    ));
-                    break;
-                  } else {
-                    circles.add(CircleAvatar(
-                      backgroundColor:
-                          Color(int.parse(lesson['lesson_type'].split('~')[1])),
-                      radius: convert_px_to_adapt_height(2.5),
-                    ));
+                  if ((selectedLessons.length == 0 || selectedLessons.contains(lesson['lesson_title'])) && (selectedGroups.length == 0 || selectedGroups.contains('${lesson['group_number']} (${lesson['group_name']})'))) {
+                    if (circles.length >= 6) {
+                      circles.add(Icon(
+                        Icons.more_horiz,
+                        size: convert_px_to_adapt_height(10),
+                      ));
+                      break;
+                    } else {
+                      circles.add(CircleAvatar(
+                        backgroundColor:
+                        Color(int.parse(lesson['lesson_type'].split('~')[1])),
+                        radius: convert_px_to_adapt_height(2.5),
+                      ));
+                    }
+                    circles.add(Padding(
+                        padding: EdgeInsets.only(
+                            bottom: convert_px_to_adapt_height(2))));
                   }
-                  circles.add(Padding(
-                      padding: EdgeInsets.only(
-                          bottom: convert_px_to_adapt_height(2))));
-                }
+                  }
               } catch (e) {
                 circles = [];
               }
@@ -221,9 +228,9 @@ class _MainPageState extends State<MainPage> {
                       color: !startWeek.isAtSameMomentAs(selectedDay)
                           ? Color(0xffE4E4E4)
                           : Colors.white,
-                      border: Border.all(
+                      border: startWeek.isAtSameMomentAs(selectedDay) ? Border.all(
                         color: Color(0xff00275E),
-                      ),
+                      ) : null,
                       borderRadius:
                           BorderRadius.circular(convert_px_to_adapt_width(10))),
                   alignment: Alignment.center,
@@ -320,120 +327,135 @@ class _MainPageState extends State<MainPage> {
         });
   }
 
-  Container lessonBtn(Map<String, dynamic> lessonData) {
-    return Container(
-      padding: EdgeInsets.only(
-          left: convert_px_to_adapt_width(15),
-          right: convert_px_to_adapt_width(15)),
-      decoration: BoxDecoration(
-          color: Color(int.parse(lessonData['lesson_type'].split('~')[1])),
-          borderRadius: BorderRadius.circular(convert_px_to_adapt_width(25))),
-      child: Column(
-        children: [
-          // Дата и аудитория
-          Container(
-            padding: EdgeInsets.only(
-                left: convert_px_to_adapt_width(15),
-                right: convert_px_to_adapt_width(15),
-                top: convert_px_to_adapt_height(25)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  // height: convert_px_to_adapt_height(25),
-                  padding: EdgeInsets.only(
-                      left: convert_px_to_adapt_width(10),
-                      right: convert_px_to_adapt_width(10),
-                      top: convert_px_to_adapt_height(5),
-                      bottom: convert_px_to_adapt_height(5)),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                          BorderRadius.circular(convert_px_to_adapt_width(10))),
-                  child: Text(lessonData['date'].split(' ')[1]),
-                ),
-                Container(
-                  // height: convert_px_to_adapt_height(25),
-                  padding: EdgeInsets.only(
-                      left: convert_px_to_adapt_width(10),
-                      right: convert_px_to_adapt_width(10),
-                      top: convert_px_to_adapt_height(5),
-                      bottom: convert_px_to_adapt_height(5)),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                          BorderRadius.circular(convert_px_to_adapt_width(10))),
-                  child: Text(lessonData['place']),
-                )
-              ],
-            ),
+  Widget lessonBtn(Map<String, dynamic> lessonData) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => LessonPage(lessonData['id']),
+            transitionDuration: Duration(milliseconds: 300),
+            transitionsBuilder: (_, a, __, c) =>
+                FadeTransition(opacity: a, child: c),
           ),
-          Padding(
-              padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(20))),
-          Padding(
-            padding: EdgeInsets.only(
-                left: convert_px_to_adapt_width(15),
-                right: convert_px_to_adapt_width(15)),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.circular(convert_px_to_adapt_width(10)),
-                  color: Colors.white),
-              child: Column(
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.only(
+            left: convert_px_to_adapt_width(15),
+            right: convert_px_to_adapt_width(15)),
+        decoration: BoxDecoration(
+            color: Color(int.parse(lessonData['lesson_type'].split('~')[1])),
+            borderRadius: BorderRadius.circular(convert_px_to_adapt_width(25))),
+        child: Column(
+          children: [
+            // Дата и аудитория
+            Container(
+              padding: EdgeInsets.only(
+                  left: convert_px_to_adapt_width(15),
+                  right: convert_px_to_adapt_width(15),
+                  top: convert_px_to_adapt_height(25)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
+                  Container(
+                    // height: convert_px_to_adapt_height(25),
                     padding: EdgeInsets.only(
-                        left: convert_px_to_adapt_width(15),
-                        top: convert_px_to_adapt_height(15)),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        lessonData['lesson_type'].split('~')[0],
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: convert_px_to_adapt_height(20)),
-                      ),
-                    ),
+                        left: convert_px_to_adapt_width(10),
+                        right: convert_px_to_adapt_width(10),
+                        top: convert_px_to_adapt_height(5),
+                        bottom: convert_px_to_adapt_height(5)),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(
+                            convert_px_to_adapt_width(10))),
+                    child: Text(lessonData['date'].split(' ')[1]),
                   ),
-                  Padding(
+                  Container(
+                    // height: convert_px_to_adapt_height(25),
                     padding: EdgeInsets.only(
-                        left: convert_px_to_adapt_width(15),
-                        right: convert_px_to_adapt_width(15)),
-                    child: Container(
-                      width: convert_px_to_adapt_width(
-                          MediaQuery.of(context).size.width / 1.5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width / 3,
-                            child: Text(
-                              lessonData['lesson_title'],
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: convert_px_to_adapt_height(20),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: convert_px_to_adapt_height(80))),
-                          Container(
-                            width: MediaQuery.of(context).size.width / 3,
-                            child: Text(
-                                '${lessonData['group_number']} (${lessonData['group_name']})'),
-                          )
-                        ],
-                      ),
-                    ),
+                        left: convert_px_to_adapt_width(10),
+                        right: convert_px_to_adapt_width(10),
+                        top: convert_px_to_adapt_height(5),
+                        bottom: convert_px_to_adapt_height(5)),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(
+                            convert_px_to_adapt_width(10))),
+                    child: Text(lessonData['place']),
                   )
                 ],
               ),
             ),
-          ),
-          Padding(
-              padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(25)))
-        ],
+            Padding(
+                padding:
+                    EdgeInsets.only(bottom: convert_px_to_adapt_height(20))),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: convert_px_to_adapt_width(15),
+                  right: convert_px_to_adapt_width(15)),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(convert_px_to_adapt_width(10)),
+                    color: Colors.white),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: convert_px_to_adapt_width(15),
+                          top: convert_px_to_adapt_height(15)),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          lessonData['lesson_type'].split('~')[0],
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: convert_px_to_adapt_height(20)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: convert_px_to_adapt_width(15),
+                          right: convert_px_to_adapt_width(15)),
+                      child: Container(
+                        width: convert_px_to_adapt_width(
+                            MediaQuery.of(context).size.width / 1.5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 3,
+                              child: Text(
+                                lessonData['lesson_title'],
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: convert_px_to_adapt_height(20),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: convert_px_to_adapt_height(80))),
+                            Container(
+                              width: MediaQuery.of(context).size.width / 3,
+                              child: Text(
+                                  '${lessonData['group_number']} (${lessonData['group_name']})'),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+                padding:
+                    EdgeInsets.only(bottom: convert_px_to_adapt_height(25)))
+          ],
+        ),
       ),
     );
   }
@@ -451,8 +473,9 @@ class _MainPageState extends State<MainPage> {
             if (data['status'] == 'success') {
               lessonsData = data['lessons'];
               for (Map<String, dynamic> lessonData in data['lessons']) {
+
                 if (lessonData['date'].split(' ')[0] ==
-                    convertDateTimeToString(selectedDay)) {
+                    convertDateTimeToString(selectedDay) && (selectedLessons.length == 0 || selectedLessons.contains(lessonData['lesson_title'])) && (selectedGroups.length == 0 || selectedGroups.contains('${lessonData['group_number']} (${lessonData['group_name']})'))) {
                   lessonBtns.add(lessonBtn(lessonData));
                   lessonBtns.add(Padding(
                       padding: EdgeInsets.only(
@@ -492,6 +515,152 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  ElevatedButton lessonInRowBtn(String lessonName) {
+    lessonName = lessonName.replaceAll('\r', '');
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          selectedLessons.contains(lessonName)
+              ? selectedLessons.remove(lessonName)
+              : selectedLessons.add(lessonName);
+        });
+      },
+      child: Text(
+        lessonName,
+        style: TextStyle(
+            color: Color(0xff00275E), fontSize: convert_px_to_adapt_height(12)),
+      ),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: selectedLessons.contains(lessonName)
+              ? Colors.grey
+              : Colors.white),
+    );
+  }
+
+  ElevatedButton groupInRowBtn(Map<String,dynamic> data) {
+    String groupName = '${data['group_number']} (${data['group_name']})';
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          selectedGroups.contains(groupName)
+              ? selectedGroups.remove(groupName)
+              : selectedGroups.add(groupName);
+        });
+      },
+      child: Text(
+        groupName,
+        style: TextStyle(
+            color: Color(0xff00275E), fontSize: convert_px_to_adapt_height(12)),
+      ),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: selectedGroups.contains(groupName)
+              ? Colors.grey
+              : Colors.white),
+    );
+  }
+
+  Container filters() {
+    return Container(
+      padding: EdgeInsets.only(
+          left: convert_px_to_adapt_width(15),
+          right: convert_px_to_adapt_width(15)),
+      width: MediaQuery.of(context).size.width -
+          convert_px_to_adapt_width(30),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius:
+          BorderRadius.circular(convert_px_to_adapt_height(10)),
+        border: Border.all(
+          color: Color(0xff00275E)
+        )
+      ),
+      child: Column(
+        children: [
+          Padding(
+              padding: EdgeInsets.only(
+                  bottom: convert_px_to_adapt_width(15))),
+          FutureBuilder(future: get_user_data(), builder: (BuildContext context,AsyncSnapshot snapshot){
+            if (snapshot.hasData && snapshot.connectionState == ConnectionState.done){
+              Map<String,dynamic> data = convert_snapshot_to_map(snapshot);
+              List<Widget> lessonBtns = [];
+              for (String lessonName in data['lesson_names'].split('\n')){
+                if (lessonName != ''){
+                  lessonBtns.add(Padding(padding: EdgeInsets.only(left: convert_px_to_adapt_width(5))));
+                  lessonBtns.add(lessonInRowBtn(lessonName));
+                }
+              }
+              return Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(
+                        convert_px_to_adapt_height(10))),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: convert_px_to_adapt_width(10)),
+                      child: Text(
+                        'Выберите необходимые занятия',
+                        style: TextStyle(color: Color(0xff00275E)),
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: lessonBtns,
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }
+            return SizedBox();
+          }),
+          Padding(
+              padding: EdgeInsets.only(
+                  bottom: convert_px_to_adapt_width(15))),
+          FutureBuilder(future: getGroups(), builder: (BuildContext context,AsyncSnapshot snapshot){
+            if (snapshot.hasData && snapshot.connectionState == ConnectionState.done){
+              Map<String,dynamic> data = convert_snapshot_to_map(snapshot);
+              List<Widget> groupBtns = [];
+              for (Map<String,dynamic> groupInfo in data['groups']){
+                groupBtns.add(Padding(padding: EdgeInsets.only(left: convert_px_to_adapt_width(5))));
+                groupBtns.add(groupInRowBtn(groupInfo));
+              }
+              return Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                        convert_px_to_adapt_height(10))),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: convert_px_to_adapt_width(10)),
+                      child: Text(
+                        'Выберите необходимые группы',
+                        style: TextStyle(color: Color(0xff00275E)),
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: groupBtns,
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }
+            return SizedBox();
+          }),
+          Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(15)))
+        ],
+      ),
+    );
+  }
+
   String displayWeek = '';
   DateTime selectedDay = DateTime.now();
   Map<int, String> translatedMonth = {
@@ -509,14 +678,22 @@ class _MainPageState extends State<MainPage> {
     12: "Декабря"
   };
   List<dynamic> lessonsData = [];
-
+  bool filtersOpened = false;
+  List<String> selectedLessons = [];
+  List<String> selectedGroups = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: CustomDrawer(),
       appBar: AppBar(
-          backgroundColor: Color(0xff00275E),
-          iconTheme: IconThemeData(color: Colors.white)),
+        backgroundColor: Color(0xff00275E),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          'Моё расписание',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
@@ -534,21 +711,17 @@ class _MainPageState extends State<MainPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.only(
-                  top: convert_px_to_adapt_height(20),
-                  bottom: convert_px_to_adapt_height(20)),
-              child: Text(
-                'Моё расписание',
-                style: TextStyle(
-                    color: Color(0xff00275E),
-                    fontSize: convert_px_to_adapt_height(20),
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
+            Padding(
+                padding:
+                    EdgeInsets.only(bottom: convert_px_to_adapt_height(20))),
             datePicker(),
+            filtersOpened
+                ? Padding(
+                    padding:
+                        EdgeInsets.only(top: convert_px_to_adapt_height(15)),
+                    child: filters(),
+                  )
+                : Padding(padding: EdgeInsets.zero),
             days(),
             Padding(
               padding: EdgeInsets.only(

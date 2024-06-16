@@ -47,6 +47,7 @@ class _TablePageState extends State<TablePage> {
     for (var key in tableData.keys) {
       rows.add(tableData[key]);
     }
+    print(tableData);
   }
 
   double convert_px_to_adapt_width(double px) {

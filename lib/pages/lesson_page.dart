@@ -1,9 +1,7 @@
 import 'package:coursework/drawer.dart';
 import 'package:coursework/functions.dart';
-import 'package:coursework/pages/groups_page.dart';
+import 'package:coursework/pages/lesson_info.dart';
 import 'package:coursework/pages/main_page.dart';
-import 'package:coursework/pages/table_page.dart';
-import 'package:dynamic_table/dynamic_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -12,21 +10,24 @@ import 'package:flutter/material.dart';
 import 'package:coursework/api.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-class AddLessonPage extends StatefulWidget {
-  DateTime date;
+class LessonPage extends StatefulWidget {
+  int lessonId;
 
-  AddLessonPage(this.date);
+  LessonPage(this.lessonId);
 
   @override
-  State<AddLessonPage> createState() => _AddLessonPageState(date);
+  State<LessonPage> createState() => _LessonPageState(lessonId);
 }
 
-class _AddLessonPageState extends State<AddLessonPage> {
-  late DateTime date;
+class _LessonPageState extends State<LessonPage> {
+  late int lessonId;
 
-  _AddLessonPageState(DateTime date1) {
-    date = date1;
-    dateController.text = convertDateTimeToString(date1);
+  _LessonPageState(int lessonId1) {
+    lessonId = lessonId1;
+    getLesson(lessonId).then((response){
+      Map<String,dynamic> lessonData = convert_response_to_map(response)['lesson'][0];
+      updateFields(lessonData);
+    });
   }
 
   double convert_px_to_adapt_width(double px) {
@@ -44,7 +45,7 @@ class _AddLessonPageState extends State<AddLessonPage> {
         onPressed: () {
           Navigator.of(context).pop();
           groupController.text =
-              '${groupInfo['group_number']} (${groupInfo['group_name']})';
+          '${groupInfo['group_number']} (${groupInfo['group_name']})';
           selectedGroupId = groupInfo['id'];
         },
         child: Container(
@@ -80,9 +81,7 @@ class _AddLessonPageState extends State<AddLessonPage> {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
             backgroundColor: Color(int.parse(color)),
-            shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(convert_px_to_adapt_width(5)))),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
         onPressed: () {
           newColorCode = color;
           typeController.text = lessonType;
@@ -95,46 +94,25 @@ class _AddLessonPageState extends State<AddLessonPage> {
               top: convert_px_to_adapt_height(30),
               bottom: convert_px_to_adapt_height(30)),
           width: MediaQuery.of(context).size.width,
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius:
-                    BorderRadius.circular(convert_px_to_adapt_height(5))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width / 3,
-                  child: Text(
-                    lessonType,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Color(0xff00275E)),
-                  ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                // width: MediaQuery.of(context).size.width/1.5,
+
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      lessonType,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
                 ),
-                IconButton(
-                    onPressed: () {
-                      removeLessonType(lessonType, color).then((response) {
-                        Map<String, dynamic> data =
-                            convert_response_to_map(response);
-                        Fluttertoast.showToast(
-                            msg: data['message'],
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 15,
-                            backgroundColor: Color(0xff00275E),
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                        if (data['status'] == 'success') {
-                          Navigator.of(context).pop();
-                        }
-                      });
-                    },
-                    icon: Icon(
-                      Icons.delete,
-                      color: Color(0xff00275E),
-                    ))
-              ],
-            ),
+              ),
+            ],
           ),
         ));
   }
@@ -152,7 +130,7 @@ class _AddLessonPageState extends State<AddLessonPage> {
                     if (snapshot.hasData &&
                         snapshot.connectionState == ConnectionState.done) {
                       Map<String, dynamic> data =
-                          convert_snapshot_to_map(snapshot);
+                      convert_snapshot_to_map(snapshot);
                       if (data['status'] == 'failed') {
                         return Center(
                           child: Text(
@@ -175,188 +153,6 @@ class _AddLessonPageState extends State<AddLessonPage> {
                         }
                         return Column(
                           children: groupButtons,
-                        );
-                      }
-                      return Column(
-                        children: [
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height /
-                                      2.5)),
-                          Text(
-                            "Журнал-мобайл",
-                            style: TextStyle(
-                                fontFamily: 'Cinzel',
-                                fontWeight: FontWeight.w900,
-                                fontSize: convert_px_to_adapt_height(35),
-                                color: Color(0xff00275E)),
-                          ),
-                          LinearProgressIndicator()
-                        ],
-                      );
-                    }
-                    return Column(
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.height / 2.5)),
-                        Text(
-                          "Журнал-мобайл",
-                          style: TextStyle(
-                              fontFamily: 'Cinzel',
-                              fontWeight: FontWeight.w900,
-                              fontSize: convert_px_to_adapt_height(35),
-                              color: Color(0xff00275E)),
-                        ),
-                        LinearProgressIndicator()
-                      ],
-                    );
-                  }),
-            ),
-          );
-        });
-  }
-
-  ElevatedButton lessonButton(String lessonName) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
-        onPressed: () {
-          lessonTitleController.text = lessonName;
-          Navigator.of(context).pop();
-        },
-        child: Container(
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(
-              left: convert_px_to_adapt_width(25),
-              top: convert_px_to_adapt_height(30),
-              bottom: convert_px_to_adapt_height(30)),
-          width: MediaQuery.of(context).size.width,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      lessonName,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ));
-  }
-
-  void showLessonAdd() {
-    newLessonNameController.text = '';
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Добавление нового занятия'),
-            actions: [
-              ElevatedButton(
-                  onPressed: () {
-                    if (newLessonNameController.text == '') {
-                      Fluttertoast.showToast(
-                          msg: 'Укажите название занятия!',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 15,
-                          backgroundColor: Color(0xff00275E),
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    } else {
-                      addLessonName(newLessonNameController.text)
-                          .then((response) {
-                        Map<String, dynamic> data =
-                        convert_response_to_map(response);
-                        if (data['status'] == 'success') {
-                          setState(() {
-                            Navigator.of(context).pop();
-                          });
-                        }
-                        Fluttertoast.showToast(
-                            msg: data['message'],
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 15,
-                            backgroundColor: Color(0xff00275E),
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      });
-                    }
-                  },
-                  child: Text('Подтвердить'))
-            ],
-            content: Column(
-              children: [
-                input(newLessonNameController, 'Введите название занятия')
-              ],
-            ),
-          );
-        });
-  }
-
-
-  void showLessonPicker() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Выберите необходимый предмет.'),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  showLessonAdd();
-                },
-                child: Text(
-                  'Добавить занятие',
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xff00275E)),
-              )
-            ],
-            content: Center(
-              child: FutureBuilder(
-                  future: get_user_data(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasData &&
-                        snapshot.connectionState == ConnectionState.done) {
-                      Map<String, dynamic> data =
-                          convert_snapshot_to_map(snapshot);
-                      if (data['status'] == 'failed') {
-                        return Center(
-                          child: Text(
-                            data['message'],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Color(0xff00275E),
-                                fontSize: convert_px_to_adapt_height(40),
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold),
-                          ),
-                        );
-                      }
-                      if (data['status'] == 'success') {
-                        List<String> lessonNames =
-                            data['lesson_names'].split('\n');
-                        List<Widget> nameButtons = [];
-                        for (String lessonName in lessonNames) {
-                          if (lessonName != '') {
-                            nameButtons.add(lessonButton(lessonName));
-                          }
-                          // groupButtons.add(Divider());
-                        }
-                        return Column(
-                          children: nameButtons,
                         );
                       }
                       return Column(
@@ -426,7 +222,7 @@ class _AddLessonPageState extends State<AddLessonPage> {
                     if (snapshot.hasData &&
                         snapshot.connectionState == ConnectionState.done) {
                       Map<String, dynamic> data =
-                          convert_snapshot_to_map(snapshot);
+                      convert_snapshot_to_map(snapshot);
                       if (data['status'] == 'failed') {
                         return Center(
                           child: Text(
@@ -442,12 +238,12 @@ class _AddLessonPageState extends State<AddLessonPage> {
                       }
                       if (data['status'] == 'success') {
                         List<dynamic> lessonTypes =
-                            data['lesson_types'].split('\n');
+                        data['lesson_types'].split('\n');
                         List<Widget> typesWidgets = [];
                         for (String lessontType in lessonTypes) {
                           print(lessontType);
-                          String type = lessontType.split('~')[0];
-                          String color = lessontType.split('~')[1];
+                          String type = lessontType.split(' - ')[0];
+                          String color = lessontType.split(' - ')[1];
                           typesWidgets.add(colorButton(type, color));
                           typesWidgets.add(Padding(
                               padding: EdgeInsets.only(
@@ -498,7 +294,6 @@ class _AddLessonPageState extends State<AddLessonPage> {
   }
 
   void showTypeAdd() {
-    newLessonTypeController.clear();
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -513,7 +308,7 @@ class _AddLessonPageState extends State<AddLessonPage> {
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 15,
-                          backgroundColor: Color(0xff00275E),
+                          backgroundColor: Colors.red,
                           textColor: Colors.white,
                           fontSize: 16.0);
                     } else {
@@ -521,7 +316,7 @@ class _AddLessonPageState extends State<AddLessonPage> {
                       addLessonType(newLessonTypeController.text, newColorCode)
                           .then((response) {
                         Map<String, dynamic> data =
-                            convert_response_to_map(response);
+                        convert_response_to_map(response);
                         if (data['status'] == 'success') {
                           setState(() {
                             Navigator.of(context).pop();
@@ -532,7 +327,7 @@ class _AddLessonPageState extends State<AddLessonPage> {
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.BOTTOM,
                             timeInSecForIosWeb: 15,
-                            backgroundColor: Color(0xff00275E),
+                            backgroundColor: Colors.red,
                             textColor: Colors.white,
                             fontSize: 16.0);
                       });
@@ -558,40 +353,6 @@ class _AddLessonPageState extends State<AddLessonPage> {
       child: TextField(
         maxLines: null,
         minLines: null,
-        controller: controller,
-        style: TextStyle(
-            fontSize: convert_px_to_adapt_height(23), color: Colors.black),
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          hintStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: convert_px_to_adapt_height(20),
-              color: Color(0xff00275E)),
-          hintText: hintText,
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Color(0xff00275E), width: convert_px_to_adapt_width(2)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Color(0xff00275E), width: convert_px_to_adapt_width(1)),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container lessonNameInput(TextEditingController controller, String hintText) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      padding: EdgeInsets.only(top: convert_px_to_adapt_height(15)),
-      width: MediaQuery.of(context).size.width,
-      child: TextField(
-        onTap: showLessonPicker,
-        maxLines: null,
-        minLines: null,
-        readOnly: true,
         controller: controller,
         style: TextStyle(
             fontSize: convert_px_to_adapt_height(23), color: Colors.black),
@@ -836,18 +597,52 @@ class _AddLessonPageState extends State<AddLessonPage> {
     );
   }
 
+  void updateFields(Map<String,dynamic> lessonData){
+    lessonTitleController.text = lessonData['lesson_title'];
+    typeController.text = lessonData['lesson_type'].split('~')[0];
+    newColorCode = lessonData['lesson_type'].split('~')[1];
+    place.text = lessonData['place'];
+    selectedGroupId = lessonData['group_id'];
+    groupController.text = '${lessonData['group_number']} (${lessonData['group_name']})';
+    timeController.text = lessonData['date'].split(' ')[1];
+    date = convertStringToDateTime(lessonData['date'].split(' ')[0]);
+    dateController.text = lessonData['date'].split(' ')[0];
+  }
+
+  Widget showTableBtn(){
+    return Container(
+      child: ElevatedButton(
+        onPressed: (){
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (_, __, ___) => LessonTablePage(lessonId),
+              transitionDuration: Duration(milliseconds: 300),
+              transitionsBuilder: (_, a, __, c) =>
+                  FadeTransition(opacity: a, child: c),
+            ),
+          );
+        },
+        child: Text('Контроль посещаемости',style: TextStyle(color: Colors.white),),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color(0xff00275E),
+        ),
+      ),
+    );
+  }
+
+  DateTime date = DateTime(2024);
   TextEditingController lessonTitleController = TextEditingController();
   TextEditingController typeController = TextEditingController();
   TextEditingController place = TextEditingController();
   TextEditingController timeController = TextEditingController();
   TextEditingController groupController = TextEditingController();
   TextEditingController newLessonTypeController = TextEditingController();
-  TextEditingController newLessonNameController = TextEditingController();
   TextEditingController newColorController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   String newColorCode = '0xff00275E';
   int selectedGroupId = 0;
-
+  bool dataLoaded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -857,13 +652,14 @@ class _AddLessonPageState extends State<AddLessonPage> {
         backgroundColor: Color(0xff00275E),
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          'Добавление занятия',
+          'Просмотр занятия',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         actions: [
           IconButton(
               onPressed: () {
+                Navigator.of(context).pop();
                 Navigator.push(
                   context,
                   PageRouteBuilder(
@@ -885,7 +681,7 @@ class _AddLessonPageState extends State<AddLessonPage> {
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 15,
-                backgroundColor: Color(0xff00275E),
+                backgroundColor: Colors.red,
                 textColor: Colors.white,
                 fontSize: 16.0);
             return;
@@ -896,7 +692,7 @@ class _AddLessonPageState extends State<AddLessonPage> {
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 15,
-                backgroundColor: Color(0xff00275E),
+                backgroundColor: Colors.red,
                 textColor: Colors.white,
                 fontSize: 16.0);
             return;
@@ -907,81 +703,67 @@ class _AddLessonPageState extends State<AddLessonPage> {
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 15,
-                backgroundColor: Color(0xff00275E),
+                backgroundColor: Colors.red,
                 textColor: Colors.white,
                 fontSize: 16.0);
             return;
           }
-          else{
-            String time = timeController.text.trim();
-            String validateResult = validateTime(time);
-            if (validateResult == 'success'){
-              addLesson(
-                  lessonTitleController.text,
-                  typeController.text,
-                  newColorCode,
-                  place.text,
-                  dateController.text,
-                  selectedGroupId,
-                  timeController.text.replaceAll(' ', ''))
-                  .then((response) {
-                Map<String, dynamic> data = convert_response_to_map(response);
-                if (data['status'] == 'success') {
-                  Fluttertoast.showToast(
-                      msg: data['message'],
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 15,
-                      backgroundColor: Colors.green,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => MainPage(),
-                      transitionDuration: Duration(milliseconds: 300),
-                      transitionsBuilder: (_, a, __, c) =>
-                          FadeTransition(opacity: a, child: c),
-                    ),
-                  );
-                } else {
-                  Fluttertoast.showToast(
-                      msg: data['message'],
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 15,
-                      backgroundColor: Color(0xff00275E),
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-                }
-              });
-            }
-            else{
+          editLesson(
+              lessonTitleController.text,
+              typeController.text,
+              newColorCode,
+              place.text,
+              dateController.text,
+              selectedGroupId,
+              timeController.text.replaceAll(' ', ''),lessonId)
+              .then((response) {
+            Map<String, dynamic> data = convert_response_to_map(response);
+            if (data['status'] == 'success') {
               Fluttertoast.showToast(
-                  msg: validateResult,
+                  msg: data['message'],
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 15,
-                  backgroundColor: Color(0xff00275E),
+                  backgroundColor: Colors.green,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => MainPage(),
+                  transitionDuration: Duration(milliseconds: 300),
+                  transitionsBuilder: (_, a, __, c) =>
+                      FadeTransition(opacity: a, child: c),
+                ),
+              );
+            } else {
+              Fluttertoast.showToast(
+                  msg: data['message'],
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 15,
+                  backgroundColor: Colors.red,
                   textColor: Colors.white,
                   fontSize: 16.0);
             }
-          }
-
+          });
         },
         child: Icon(Icons.check),
         backgroundColor: Color(0xff00275E),
       ),
       body: Column(
         children: [
-          lessonNameInput(lessonTitleController, 'Выберите нужный предмет'),
+          input(lessonTitleController, 'Введите название предмета'),
           typePicker(typeController, 'Выберите тип занятия'),
           input(place, 'Введите место проведения занятия'),
           input(timeController,
               'Введите время (формат: ХХ:ХХ - ХХ:ХХ)\nИли выберите ниже'),
+          Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(15))),
           times(),
           groupPicker(groupController, 'Выберите группу'),
-          datePicker(dateController, 'Выберите дату')
+          datePicker(dateController, 'Выберите дату'),
+          Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(15))),
+          showTableBtn()
         ],
       ),
       backgroundColor: Colors.white,
