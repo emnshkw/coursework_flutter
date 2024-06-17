@@ -189,7 +189,11 @@ class _MainPageState extends State<MainPage> {
                 List<dynamic> curDayLessons =
                     getLessonsInDay(data['lessons'], startWeek);
                 for (Map<String, dynamic> lesson in curDayLessons) {
-                  if ((selectedLessons.length == 0 || selectedLessons.contains(lesson['lesson_title'])) && (selectedGroups.length == 0 || selectedGroups.contains('${lesson['group_number']} (${lesson['group_name']})'))) {
+                  if ((selectedLessons.length == 0 ||
+                          selectedLessons.contains(lesson['lesson_title'])) &&
+                      (selectedGroups.length == 0 ||
+                          selectedGroups.contains(
+                              '${lesson['group_number']} (${lesson['group_name']})'))) {
                     if (circles.length >= 6) {
                       circles.add(Icon(
                         Icons.more_horiz,
@@ -198,8 +202,8 @@ class _MainPageState extends State<MainPage> {
                       break;
                     } else {
                       circles.add(CircleAvatar(
-                        backgroundColor:
-                        Color(int.parse(lesson['lesson_type'].split('~')[1])),
+                        backgroundColor: Color(
+                            int.parse(lesson['lesson_type'].split('~')[1])),
                         radius: convert_px_to_adapt_height(2.5),
                       ));
                     }
@@ -207,7 +211,7 @@ class _MainPageState extends State<MainPage> {
                         padding: EdgeInsets.only(
                             bottom: convert_px_to_adapt_height(2))));
                   }
-                  }
+                }
               } catch (e) {
                 circles = [];
               }
@@ -228,9 +232,11 @@ class _MainPageState extends State<MainPage> {
                       color: !startWeek.isAtSameMomentAs(selectedDay)
                           ? Color(0xffE4E4E4)
                           : Colors.white,
-                      border: startWeek.isAtSameMomentAs(selectedDay) ? Border.all(
-                        color: Color(0xff00275E),
-                      ) : null,
+                      border: startWeek.isAtSameMomentAs(selectedDay)
+                          ? Border.all(
+                              color: Color(0xff00275E),
+                            )
+                          : null,
                       borderRadius:
                           BorderRadius.circular(convert_px_to_adapt_width(10))),
                   alignment: Alignment.center,
@@ -290,11 +296,13 @@ class _MainPageState extends State<MainPage> {
                       color: !startWeek.isAtSameMomentAs(selectedDay)
                           ? Color(0xffE4E4E4)
                           : Colors.white,
-                      border: startWeek.isAtSameMomentAs(selectedDay) ? Border.all(
-                        color: Color(0xff00275E),
-                      ) : null,
+                      border: startWeek.isAtSameMomentAs(selectedDay)
+                          ? Border.all(
+                              color: Color(0xff00275E),
+                            )
+                          : null,
                       borderRadius:
-                      BorderRadius.circular(convert_px_to_adapt_width(10))),
+                          BorderRadius.circular(convert_px_to_adapt_width(10))),
                   alignment: Alignment.center,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -473,9 +481,13 @@ class _MainPageState extends State<MainPage> {
             if (data['status'] == 'success') {
               lessonsData = data['lessons'];
               for (Map<String, dynamic> lessonData in data['lessons']) {
-
                 if (lessonData['date'].split(' ')[0] ==
-                    convertDateTimeToString(selectedDay) && (selectedLessons.length == 0 || selectedLessons.contains(lessonData['lesson_title'])) && (selectedGroups.length == 0 || selectedGroups.contains('${lessonData['group_number']} (${lessonData['group_name']})'))) {
+                        convertDateTimeToString(selectedDay) &&
+                    (selectedLessons.length == 0 ||
+                        selectedLessons.contains(lessonData['lesson_title'])) &&
+                    (selectedGroups.length == 0 ||
+                        selectedGroups.contains(
+                            '${lessonData['group_number']} (${lessonData['group_name']})'))) {
                   lessonBtns.add(lessonBtn(lessonData));
                   lessonBtns.add(Padding(
                       padding: EdgeInsets.only(
@@ -537,7 +549,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  ElevatedButton groupInRowBtn(Map<String,dynamic> data) {
+  ElevatedButton groupInRowBtn(Map<String, dynamic> data) {
     String groupName = '${data['group_number']} (${data['group_name']})';
     return ElevatedButton(
       onPressed: () {
@@ -553,9 +565,8 @@ class _MainPageState extends State<MainPage> {
             color: Color(0xff00275E), fontSize: convert_px_to_adapt_height(12)),
       ),
       style: ElevatedButton.styleFrom(
-          backgroundColor: selectedGroups.contains(groupName)
-              ? Colors.grey
-              : Colors.white),
+          backgroundColor:
+              selectedGroups.contains(groupName) ? Colors.grey : Colors.white),
     );
   }
 
@@ -564,98 +575,102 @@ class _MainPageState extends State<MainPage> {
       padding: EdgeInsets.only(
           left: convert_px_to_adapt_width(15),
           right: convert_px_to_adapt_width(15)),
-      width: MediaQuery.of(context).size.width -
-          convert_px_to_adapt_width(30),
+      width: MediaQuery.of(context).size.width - convert_px_to_adapt_width(30),
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius:
-          BorderRadius.circular(convert_px_to_adapt_height(10)),
-        border: Border.all(
-          color: Color(0xff00275E)
-        )
-      ),
+          borderRadius: BorderRadius.circular(convert_px_to_adapt_height(10)),
+          border: Border.all(color: Color(0xff00275E))),
       child: Column(
         children: [
           Padding(
-              padding: EdgeInsets.only(
-                  bottom: convert_px_to_adapt_width(15))),
-          FutureBuilder(future: get_user_data(), builder: (BuildContext context,AsyncSnapshot snapshot){
-            if (snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-              Map<String,dynamic> data = convert_snapshot_to_map(snapshot);
-              List<Widget> lessonBtns = [];
-              for (String lessonName in data['lesson_names'].split('\n')){
-                if (lessonName != ''){
-                  lessonBtns.add(Padding(padding: EdgeInsets.only(left: convert_px_to_adapt_width(5))));
-                  lessonBtns.add(lessonInRowBtn(lessonName));
+              padding: EdgeInsets.only(bottom: convert_px_to_adapt_width(15))),
+          FutureBuilder(
+              future: get_user_data(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData &&
+                    snapshot.connectionState == ConnectionState.done) {
+                  Map<String, dynamic> data = convert_snapshot_to_map(snapshot);
+                  List<Widget> lessonBtns = [];
+                  for (String lessonName in data['lesson_names'].split('\n')) {
+                    if (lessonName != '') {
+                      lessonBtns.add(Padding(
+                          padding: EdgeInsets.only(
+                              left: convert_px_to_adapt_width(5))));
+                      lessonBtns.add(lessonInRowBtn(lessonName));
+                    }
+                  }
+                  return Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(
+                            convert_px_to_adapt_height(10))),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: convert_px_to_adapt_width(10)),
+                          child: Text(
+                            'Выберите необходимые занятия',
+                            style: TextStyle(color: Color(0xff00275E)),
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: lessonBtns,
+                          ),
+                        )
+                      ],
+                    ),
+                  );
                 }
-              }
-              return Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(
-                        convert_px_to_adapt_height(10))),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: convert_px_to_adapt_width(10)),
-                      child: Text(
-                        'Выберите необходимые занятия',
-                        style: TextStyle(color: Color(0xff00275E)),
-                      ),
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: lessonBtns,
-                      ),
-                    )
-                  ],
-                ),
-              );
-            }
-            return SizedBox();
-          }),
+                return SizedBox();
+              }),
           Padding(
-              padding: EdgeInsets.only(
-                  bottom: convert_px_to_adapt_width(15))),
-          FutureBuilder(future: getGroups(), builder: (BuildContext context,AsyncSnapshot snapshot){
-            if (snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-              Map<String,dynamic> data = convert_snapshot_to_map(snapshot);
-              List<Widget> groupBtns = [];
-              for (Map<String,dynamic> groupInfo in data['groups']){
-                groupBtns.add(Padding(padding: EdgeInsets.only(left: convert_px_to_adapt_width(5))));
-                groupBtns.add(groupInRowBtn(groupInfo));
-              }
-              return Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                        convert_px_to_adapt_height(10))),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: convert_px_to_adapt_width(10)),
-                      child: Text(
-                        'Выберите необходимые группы',
-                        style: TextStyle(color: Color(0xff00275E)),
-                      ),
+              padding: EdgeInsets.only(bottom: convert_px_to_adapt_width(15))),
+          FutureBuilder(
+              future: getGroups(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData &&
+                    snapshot.connectionState == ConnectionState.done) {
+                  Map<String, dynamic> data = convert_snapshot_to_map(snapshot);
+                  List<Widget> groupBtns = [];
+                  for (Map<String, dynamic> groupInfo in data['groups']) {
+                    groupBtns.add(Padding(
+                        padding: EdgeInsets.only(
+                            left: convert_px_to_adapt_width(5))));
+                    groupBtns.add(groupInRowBtn(groupInfo));
+                  }
+                  return Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                            convert_px_to_adapt_height(10))),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: convert_px_to_adapt_width(10)),
+                          child: Text(
+                            'Выберите необходимые группы',
+                            style: TextStyle(color: Color(0xff00275E)),
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: groupBtns,
+                          ),
+                        )
+                      ],
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: groupBtns,
-                      ),
-                    )
-                  ],
-                ),
-              );
-            }
-            return SizedBox();
-          }),
-          Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(15)))
+                  );
+                }
+                return SizedBox();
+              }),
+          Padding(
+              padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(15)))
         ],
       ),
     );
@@ -681,6 +696,7 @@ class _MainPageState extends State<MainPage> {
   bool filtersOpened = false;
   List<String> selectedLessons = [];
   List<String> selectedGroups = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -28,14 +28,15 @@ class FileStorage {
     // return directory;
   }
 
-  static Future<File> writeCounter(String text,String name) async {
+  static Future<File> writeCounter(String text, String name) async {
     final path = await _localPath;
     // Create a file for the path of
     // device and file name with extension
-    File file= File('$path/$name');
+    File file = File('$path/$name');
     // Write the data in the file you have created
     return file.writeAsString(text);
   }
+
   static Future<String> read() async {
     String text = '';
     try {

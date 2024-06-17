@@ -7,7 +7,6 @@ import 'package:coursework/api.dart';
 import 'package:coursework/pages/otp_page.dart';
 
 class AuthPage extends StatefulWidget {
-
   @override
   State<AuthPage> createState() => _AuthPageState();
 }
@@ -16,7 +15,6 @@ class _AuthPageState extends State<AuthPage> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
-
 
   double convert_px_to_adapt_width(double px) {
     return MediaQuery.of(context).size.width / 392 * px;
@@ -32,9 +30,7 @@ class _AuthPageState extends State<AuthPage> {
           top: convert_px_to_adapt_height(80),
           left: convert_px_to_adapt_width(30)),
       child: GestureDetector(
-        onTap: () {
-
-        },
+        onTap: () {},
         child: Row(
           children: [
             Icon(
@@ -61,7 +57,9 @@ class _AuthPageState extends State<AuthPage> {
       child: Text(
         'Регистрация',
         style: TextStyle(
-            color: Colors.white, fontSize: convert_px_to_adapt_height(30),fontWeight: FontWeight.bold),
+            color: Colors.white,
+            fontSize: convert_px_to_adapt_height(30),
+            fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -91,7 +89,6 @@ class _AuthPageState extends State<AuthPage> {
         style: TextStyle(
             fontSize: convert_px_to_adapt_height(23), color: Color(0xff00275E)),
         decoration: InputDecoration(
-
           filled: true,
           fillColor: Colors.white,
           hintStyle: TextStyle(
@@ -138,8 +135,8 @@ class _AuthPageState extends State<AuthPage> {
         style: TextStyle(
             fontSize: convert_px_to_adapt_height(23), color: Color(0xff00275E)),
         decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
+            filled: true,
+            fillColor: Colors.white,
             hintStyle: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: convert_px_to_adapt_height(20),
@@ -147,15 +144,17 @@ class _AuthPageState extends State<AuthPage> {
             hintText: hint,
             focusedBorder: OutlineInputBorder(
               borderRadius:
-              BorderRadius.circular(convert_px_to_adapt_width(20)),
+                  BorderRadius.circular(convert_px_to_adapt_width(20)),
               borderSide: BorderSide(
-                  color: Color(0xff00275E), width: convert_px_to_adapt_width(2)),
+                  color: Color(0xff00275E),
+                  width: convert_px_to_adapt_width(2)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius:
-              BorderRadius.circular(convert_px_to_adapt_width(20)),
+                  BorderRadius.circular(convert_px_to_adapt_width(20)),
               borderSide: BorderSide(
-                  color: Color(0xff00275E), width: convert_px_to_adapt_width(1)),
+                  color: Color(0xff00275E),
+                  width: convert_px_to_adapt_width(1)),
             ),
             prefixIcon: Padding(
               padding: EdgeInsets.only(
@@ -200,15 +199,14 @@ class _AuthPageState extends State<AuthPage> {
       child: TextField(
         keyboardType: keyboardType,
         controller: controller,
-
         style: TextStyle(
             fontSize: convert_px_to_adapt_height(23), color: Colors.black),
         decoration: InputDecoration(
-          // labelStyle: TextStyle(
-          //   color: Color(0xff00275E)
-          // ),
-          filled: true,
-          fillColor: Colors.white,
+            // labelStyle: TextStyle(
+            //   color: Color(0xff00275E)
+            // ),
+            filled: true,
+            fillColor: Colors.white,
             hintStyle: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: convert_px_to_adapt_height(20),
@@ -216,15 +214,17 @@ class _AuthPageState extends State<AuthPage> {
             hintText: hint,
             focusedBorder: OutlineInputBorder(
               borderRadius:
-              BorderRadius.circular(convert_px_to_adapt_width(20)),
+                  BorderRadius.circular(convert_px_to_adapt_width(20)),
               borderSide: BorderSide(
-                  color: Color(0xff00275E), width: convert_px_to_adapt_width(2)),
+                  color: Color(0xff00275E),
+                  width: convert_px_to_adapt_width(2)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius:
-              BorderRadius.circular(convert_px_to_adapt_width(20)),
+                  BorderRadius.circular(convert_px_to_adapt_width(20)),
               borderSide: BorderSide(
-                  color: Color(0xff00275E), width: convert_px_to_adapt_width(1)),
+                  color: Color(0xff00275E),
+                  width: convert_px_to_adapt_width(1)),
             ),
             prefixIcon: Padding(
               padding: EdgeInsets.only(
@@ -238,7 +238,6 @@ class _AuthPageState extends State<AuthPage> {
       ),
     );
   }
-
 
   ElevatedButton regBtn() {
     return ElevatedButton(
@@ -259,19 +258,22 @@ class _AuthPageState extends State<AuthPage> {
                 'name': _nameController.text,
                 'password': _passwordController.text,
                 'phone': _phoneController.text,
-                'type':'Регистрация'
+                'type': 'Регистрация'
               };
-              try_to_get_registration_token(_nameController.text,_phoneController.text).then((value) {
-
+              try_to_get_registration_token(
+                      _nameController.text, _phoneController.text)
+                  .then((value) {
                 Map<String, dynamic> response_data =
-                jsonDecode(utf8.decode(value.bodyBytes));
-                if (response_data['status'].toString().toLowerCase() == 'success') {
+                    jsonDecode(utf8.decode(value.bodyBytes));
+                if (response_data['status'].toString().toLowerCase() ==
+                    'success') {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => OtpPage(data),
                       transitionDuration: Duration(milliseconds: 300),
-                      transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+                      transitionsBuilder: (_, a, __, c) =>
+                          FadeTransition(opacity: a, child: c),
                     ),
                   );
                 } else {
@@ -314,7 +316,7 @@ class _AuthPageState extends State<AuthPage> {
           style: TextStyle(
               color: Colors.white,
               fontSize: convert_px_to_adapt_height(17),
-          fontWeight: FontWeight.bold),
+              fontWeight: FontWeight.bold),
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(0xff00275E),
@@ -327,26 +329,29 @@ class _AuthPageState extends State<AuthPage> {
         ));
   }
 
-
-  Padding alreadyRegistered(){
-    return Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(10)),child: GestureDetector(
-      onTap: (){
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => LoginPage(),
-            transitionDuration: Duration(milliseconds: 300),
-            transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
-          ),
-        );
-      },
-      child: Text('Уже зарегистрированы?\nВойдите',textAlign: TextAlign.center,style: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.bold
-      ),),
-    ),);
+  Padding alreadyRegistered() {
+    return Padding(
+      padding: EdgeInsets.only(top: convert_px_to_adapt_height(10)),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (_, __, ___) => LoginPage(),
+              transitionDuration: Duration(milliseconds: 300),
+              transitionsBuilder: (_, a, __, c) =>
+                  FadeTransition(opacity: a, child: c),
+            ),
+          );
+        },
+        child: Text(
+          'Уже зарегистрированы?\nВойдите',
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
   }
-
 
   bool pwdHinded = true;
 
@@ -356,11 +361,11 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/photos/background.png'),fit: BoxFit.fill)
-        ),
+            image: DecorationImage(
+                image: AssetImage('assets/photos/background.png'),
+                fit: BoxFit.fill)),
         child: Column(
           children: [
             Container(
@@ -373,8 +378,8 @@ class _AuthPageState extends State<AuthPage> {
               padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(55)),
             ),
             Container(
-              child: _nameInput(
-                  Icon(Icons.person), 'ФИО', _nameController, TextInputType.text),
+              child: _nameInput(Icon(Icons.person), 'ФИО', _nameController,
+                  TextInputType.text),
             ),
             Padding(
               padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(15)),

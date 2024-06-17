@@ -121,13 +121,8 @@ class _TablePageState extends State<TablePage> {
                 Navigator.push(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => AddGroupPage(
-                        groupNumberText,
-                        groupNameText,
-                        groupMarksText,
-                        tableData,
-                        created,
-                        id),
+                    pageBuilder: (_, __, ___) => AddGroupPage(groupNumberText,
+                        groupNameText, groupMarksText, tableData, created, id),
                     transitionDuration: Duration(milliseconds: 300),
                     transitionsBuilder: (_, a, __, c) =>
                         FadeTransition(opacity: a, child: c),

@@ -40,9 +40,7 @@ class _LoginPageState extends State<LoginPage> {
           top: convert_px_to_adapt_height(80),
           left: convert_px_to_adapt_width(30)),
       child: GestureDetector(
-        onTap: () {
-
-        },
+        onTap: () {},
         child: Row(
           children: [
             Icon(
@@ -69,7 +67,9 @@ class _LoginPageState extends State<LoginPage> {
       child: Text(
         'Вход',
         style: TextStyle(
-            color: Colors.white, fontSize: convert_px_to_adapt_height(30),fontWeight: FontWeight.bold),
+            color: Colors.white,
+            fontSize: convert_px_to_adapt_height(30),
+            fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -154,15 +154,17 @@ class _LoginPageState extends State<LoginPage> {
             hintText: hint,
             focusedBorder: OutlineInputBorder(
               borderRadius:
-              BorderRadius.circular(convert_px_to_adapt_width(20)),
+                  BorderRadius.circular(convert_px_to_adapt_width(20)),
               borderSide: BorderSide(
-                  color: Color(0xff00275E), width: convert_px_to_adapt_width(2)),
+                  color: Color(0xff00275E),
+                  width: convert_px_to_adapt_width(2)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius:
-              BorderRadius.circular(convert_px_to_adapt_width(20)),
+                  BorderRadius.circular(convert_px_to_adapt_width(20)),
               borderSide: BorderSide(
-                  color: Color(0xff00275E), width: convert_px_to_adapt_width(1)),
+                  color: Color(0xff00275E),
+                  width: convert_px_to_adapt_width(1)),
             ),
             prefixIcon: Padding(
               padding: EdgeInsets.only(
@@ -196,21 +198,20 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
-
   ElevatedButton loginBtn() {
     return ElevatedButton(
         onPressed: () {
-          get_token('+${_phoneController.text}', _passwordController.text).then((value) {
+          get_token('+${_phoneController.text}', _passwordController.text)
+              .then((value) {
             Map<String, dynamic> response_data =
-            jsonDecode(utf8.decode(value.bodyBytes));
+                jsonDecode(utf8.decode(value.bodyBytes));
             try {
               String token = response_data['auth_token'].toString();
 
               if (token == 'null') {
                 Fluttertoast.showToast(
                     msg:
-                    'Вход невозможен.\nПроверьте правильность ввода номера телефона и пароля',
+                        'Вход невозможен.\nПроверьте правильность ввода номера телефона и пароля',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 15,
@@ -232,7 +233,8 @@ class _LoginPageState extends State<LoginPage> {
                   PageRouteBuilder(
                     pageBuilder: (_, __, ___) => LandingPage(),
                     transitionDuration: Duration(milliseconds: 300),
-                    transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+                    transitionsBuilder: (_, a, __, c) =>
+                        FadeTransition(opacity: a, child: c),
                   ),
                 );
               }
@@ -267,25 +269,29 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-  Padding notRegistered(){
-    return Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(10)),child: GestureDetector(
-      onTap: (){
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => AuthPage(),
-            transitionDuration: Duration(milliseconds: 300),
-            transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
-          ),
-        );
-      },
-      child: Text('Впервые здесь?\nЗарегистрируйтесь',textAlign: TextAlign.center,style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold
-      ),),
-    ),);
+  Padding notRegistered() {
+    return Padding(
+      padding: EdgeInsets.only(top: convert_px_to_adapt_height(10)),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (_, __, ___) => AuthPage(),
+              transitionDuration: Duration(milliseconds: 300),
+              transitionsBuilder: (_, a, __, c) =>
+                  FadeTransition(opacity: a, child: c),
+            ),
+          );
+        },
+        child: Text(
+          'Впервые здесь?\nЗарегистрируйтесь',
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
   }
-
 
   bool pwdHinded = true;
 
@@ -295,11 +301,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-
       body: Container(
         decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/photos/background.png'),fit: BoxFit.fill)
-        ),
+            image: DecorationImage(
+                image: AssetImage('assets/photos/background.png'),
+                fit: BoxFit.fill)),
         child: Column(
           children: [
             Container(
@@ -311,7 +317,6 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(55)),
             ),
-
             Container(
               child: _phoneInput(Icon(Icons.phone), 'Номер телефона',
                   _phoneController, false, TextInputType.phone),

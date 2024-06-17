@@ -27,15 +27,13 @@ Map<String, dynamic> convert_response_to_map(Response response) {
   return (data);
 }
 
-
 Future<Response> get_info_as_future(String urlAfter) async {
   final token = await getToken();
-  var response = get(Uri.parse('$urlStart/api/v1/$urlAfter'),
-      headers: {
-        'Content-Type': 'text/html',
-        'charset': 'UTF-8',
-        'Authorization': "Token $token"
-      });
+  var response = get(Uri.parse('$urlStart/api/v1/$urlAfter'), headers: {
+    'Content-Type': 'text/html',
+    'charset': 'UTF-8',
+    'Authorization': "Token $token"
+  });
   return response;
 }
 
@@ -51,13 +49,11 @@ Stream<Response> get_info_as_stream(String urlAfter) async* {
 }
 
 Future<Response> try_to_get_registration_token(
-
     String name, String phone) async {
   final body = {'username': name, "phone": phone};
 
   final jsonString = json.encode(body);
-  final response = await post(
-      Uri.parse('$urlStart/api/v1/auth/user/get_token'),
+  final response = await post(Uri.parse('$urlStart/api/v1/auth/user/get_token'),
       body: jsonString,
       headers: {
         'Content-Type': 'application/json',
@@ -70,8 +66,7 @@ Future<Response> try_to_get_reset_token(String phone, String password) async {
   final body = {'password': password, "phone": phone};
   final jsonString = json.encode(body);
   final response = await post(
-      Uri.parse(
-          '$urlStart/api/v1/auth/user/send_update_password_code'),
+      Uri.parse('$urlStart/api/v1/auth/user/send_update_password_code'),
       body: jsonString,
       headers: {
         'Content-Type': 'application/json',
@@ -84,8 +79,7 @@ Future<Response> get_token(String phone, String password) async {
   final body = {'password': password, "phone": phone};
 
   final jsonString = json.encode(body);
-  final response = await post(
-      Uri.parse('$urlStart/auth/token/login'),
+  final response = await post(Uri.parse('$urlStart/auth/token/login'),
       body: jsonString,
       headers: {
         'Content-Type': 'application/json',
@@ -108,23 +102,21 @@ Future<void> delete_token() async {
 // $urlStart/auth/token/logout/
 Future<Response> logout() async {
   final token = await getToken();
-  var response = post(Uri.parse('$urlStart/auth/token/logout/'),
-      headers: {
-        'Content-Type': 'text/html',
-        'charset': 'UTF-8',
-        'Authorization': "Token $token"
-      });
+  var response = post(Uri.parse('$urlStart/auth/token/logout/'), headers: {
+    'Content-Type': 'text/html',
+    'charset': 'UTF-8',
+    'Authorization': "Token $token"
+  });
   delete_token();
   return response;
 }
 
 Future<Response> check_token(String token) async {
-  var response = await get(Uri.parse('$urlStart/api/v1/auth/user/'),
-      headers: {
-        'Content-Type': 'text/html',
-        'charset': 'UTF-8',
-        'Authorization': "Token $token"
-      });
+  var response = await get(Uri.parse('$urlStart/api/v1/auth/user/'), headers: {
+    'Content-Type': 'text/html',
+    'charset': 'UTF-8',
+    'Authorization': "Token $token"
+  });
   return response;
 }
 
@@ -136,7 +128,7 @@ Future<Response> try_to_register(Map<String, String> data) async {
     'code': data['code'],
     'new_city': data['city'],
     "re_password": data['password'],
-    "role":data['role']
+    "role": data['role']
   };
   final jsonString = json.encode(body);
   final response = await post(
@@ -158,8 +150,7 @@ Future<Response> try_to_reset_password(
   };
   final jsonString = json.encode(body);
   final response = await post(
-      Uri.parse(
-          '$urlStart/api/v1/auth/user/check_update_password_code'),
+      Uri.parse('$urlStart/api/v1/auth/user/check_update_password_code'),
       body: jsonString,
       headers: {
         'Content-Type': 'application/json',
@@ -168,105 +159,97 @@ Future<Response> try_to_reset_password(
   return response;
 }
 
-
 Future<Response> get_user_data() async {
   final token = await getToken();
-  final response = await get(
-      Uri.parse('$urlStart/api/v1/auth/user'),
+  final response = await get(Uri.parse('$urlStart/api/v1/auth/user'),
       headers: {'Authorization': "Token $token"});
   return response;
 }
 
-Future<Response> addLessonType(String lessonType,String hexColor) async {
-  final body = {
-    'lesson_type':lessonType,
-    'color':hexColor
-  };
+Future<Response> addLessonType(String lessonType, String hexColor) async {
+  final body = {'lesson_type': lessonType, 'color': hexColor};
   final token = await getToken();
   final jsonString = json.encode(body);
-  final response = await post(
-      Uri.parse('$urlStart/api/v1/auth/user/'),
+  final response = await post(Uri.parse('$urlStart/api/v1/auth/user/'),
       body: jsonString,
-      headers: {'Authorization': "Token $token",
+      headers: {
+        'Authorization': "Token $token",
         'Content-Type': 'application/json',
-        'charset': 'UTF-8',});
-  return response;
-}
-Future<Response> removeLessonType(String lessonType,String hexColor) async {
-  final body = {
-    'lesson_type':lessonType,
-    'color':hexColor
-  };
-  final token = await getToken();
-  final jsonString = json.encode(body);
-  final response = await delete(
-      Uri.parse('$urlStart/api/v1/auth/user/'),
-      body: jsonString,
-      headers: {'Authorization': "Token $token",
-        'Content-Type': 'application/json',
-        'charset': 'UTF-8',});
+        'charset': 'UTF-8',
+      });
   return response;
 }
 
+Future<Response> removeLessonType(String lessonType, String hexColor) async {
+  final body = {'lesson_type': lessonType, 'color': hexColor};
+  final token = await getToken();
+  final jsonString = json.encode(body);
+  final response = await delete(Uri.parse('$urlStart/api/v1/auth/user/'),
+      body: jsonString,
+      headers: {
+        'Authorization': "Token $token",
+        'Content-Type': 'application/json',
+        'charset': 'UTF-8',
+      });
+  return response;
+}
 
 Future<Response> addLessonName(String lessonName) async {
   final body = {
-    'lesson_name':lessonName,
+    'lesson_name': lessonName,
   };
   final token = await getToken();
   final jsonString = json.encode(body);
-  final response = await put(
-      Uri.parse('$urlStart/api/v1/auth/user/'),
+  final response = await put(Uri.parse('$urlStart/api/v1/auth/user/'),
       body: jsonString,
-      headers: {'Authorization': "Token $token",
+      headers: {
+        'Authorization': "Token $token",
         'Content-Type': 'application/json',
-        'charset': 'UTF-8',});
+        'charset': 'UTF-8',
+      });
   return response;
 }
 
 Future<Response> removeLessonName(String lessonName) async {
   final body = {
-    'lesson_name':lessonName,
+    'lesson_name': lessonName,
   };
   final token = await getToken();
   final jsonString = json.encode(body);
-  final response = await delete(
-      Uri.parse('$urlStart/api/v1/auth/user/'),
+  final response = await delete(Uri.parse('$urlStart/api/v1/auth/user/'),
       body: jsonString,
-      headers: {'Authorization': "Token $token",
+      headers: {
+        'Authorization': "Token $token",
         'Content-Type': 'application/json',
-        'charset': 'UTF-8',});
+        'charset': 'UTF-8',
+      });
   return response;
 }
 
 Future<Response> getLessonResults() async {
   final token = await getToken();
-  final response = await get(
-      Uri.parse('$urlStart/api/v1/lessons_to_results/'),
+  final response = await get(Uri.parse('$urlStart/api/v1/lessons_to_results/'),
       headers: {'Authorization': "Token $token"});
   return response;
 }
-
 
 Future<Response> getResults(int id) async {
   final token = await getToken();
-  final response = await get(
-      Uri.parse('$urlStart/api/v1/results/$id/'),
+  final response = await get(Uri.parse('$urlStart/api/v1/results/$id/'),
       headers: {'Authorization': "Token $token"});
   return response;
 }
 
-Future<Response> generateResults(int lessonId,int groupId,String lessonTitle) async {
+Future<Response> generateResults(
+    int lessonId, int groupId, String lessonTitle) async {
   final body = {
-    "lesson_id":lessonId,
-    "group_id":groupId,
-    "lesson_title":lessonTitle
+    "lesson_id": lessonId,
+    "group_id": groupId,
+    "lesson_title": lessonTitle
   };
   final token = await getToken();
   final jsonString = json.encode(body);
-  final response = await post(
-      Uri.parse(
-          '$urlStart/api/v1/results/'),
+  final response = await post(Uri.parse('$urlStart/api/v1/results/'),
       body: jsonString,
       headers: {
         'Authorization': "Token $token",
@@ -276,17 +259,16 @@ Future<Response> generateResults(int lessonId,int groupId,String lessonTitle) as
   return response;
 }
 
-Future<Response> updateResults(int lessonId,int groupId,String lessonTitle,int pk) async {
+Future<Response> updateResults(
+    int lessonId, int groupId, String lessonTitle, int pk) async {
   final body = {
-    "lesson_id":lessonId,
-    "group_id":groupId,
-    "lesson_title":lessonTitle
+    "lesson_id": lessonId,
+    "group_id": groupId,
+    "lesson_title": lessonTitle
   };
   final token = await getToken();
   final jsonString = json.encode(body);
-  final response = await post(
-      Uri.parse(
-          '$urlStart/api/v1/results/$pk/'),
+  final response = await post(Uri.parse('$urlStart/api/v1/results/$pk/'),
       body: jsonString,
       headers: {
         'Authorization': "Token $token",
@@ -296,17 +278,12 @@ Future<Response> updateResults(int lessonId,int groupId,String lessonTitle,int p
   return response;
 }
 
-
-Future<Response> editResults(int id,String results,String resultsPoint) async {
-  final body = {
-    "result":results,
-    'result_points':resultsPoint
-  };
+Future<Response> editResults(
+    int id, String results, String resultsPoint) async {
+  final body = {"result": results, 'result_points': resultsPoint};
   final token = await getToken();
   final jsonString = json.encode(body);
-  final response = await put(
-      Uri.parse(
-          '$urlStart/api/v1/results/$id/'),
+  final response = await put(Uri.parse('$urlStart/api/v1/results/$id/'),
       body: jsonString,
       headers: {
         'Authorization': "Token $token",
@@ -315,30 +292,25 @@ Future<Response> editResults(int id,String results,String resultsPoint) async {
       });
   return response;
 }
-
 
 Future<Response> getGroups() async {
   final token = await getToken();
-  final response = await get(
-      Uri.parse('$urlStart/api/v1/groups/'),
+  final response = await get(Uri.parse('$urlStart/api/v1/groups/'),
       headers: {'Authorization': "Token $token"});
   return response;
 }
 
-
-Future<Response> addGroup(
-    String groupNumber,String groupName,String groupMarks,String students) async {
+Future<Response> addGroup(String groupNumber, String groupName,
+    String groupMarks, String students) async {
   final body = {
     "group_number": groupNumber,
     "group_name": groupName,
     'marks': groupMarks,
-    "students":students
+    "students": students
   };
   final token = await getToken();
   final jsonString = json.encode(body);
-  final response = await post(
-      Uri.parse(
-          '$urlStart/api/v1/groups/'),
+  final response = await post(Uri.parse('$urlStart/api/v1/groups/'),
       body: jsonString,
       headers: {
         'Authorization': "Token $token",
@@ -348,19 +320,17 @@ Future<Response> addGroup(
   return response;
 }
 
-Future<Response> editGroup(
-    String groupNumber,String groupName,String groupMarks,String students,String id) async {
+Future<Response> editGroup(String groupNumber, String groupName,
+    String groupMarks, String students, String id) async {
   final body = {
     "group_number": groupNumber,
     "group_name": groupName,
     'marks': groupMarks,
-    "students":students
+    "students": students
   };
   final token = await getToken();
   final jsonString = json.encode(body);
-  final response = await put(
-      Uri.parse(
-          '$urlStart/api/v1/groups/$id/'),
+  final response = await put(Uri.parse('$urlStart/api/v1/groups/$id/'),
       body: jsonString,
       headers: {
         'Authorization': "Token $token",
@@ -369,72 +339,44 @@ Future<Response> editGroup(
       });
   return response;
 }
+
 Future<Response> deleteGroup(int id) async {
-
   final token = await getToken();
-  final response = await delete(
-      Uri.parse(
-          '$urlStart/api/v1/groups/$id/'),
-      headers: {
-        'Authorization': "Token $token",
-        'Content-Type': 'application/json',
-        'charset': 'UTF-8',
-      });
+  final response =
+      await delete(Uri.parse('$urlStart/api/v1/groups/$id/'), headers: {
+    'Authorization': "Token $token",
+    'Content-Type': 'application/json',
+    'charset': 'UTF-8',
+  });
   return response;
 }
 
 Future<Response> getLessons() async {
   final token = await getToken();
-  final response = await get(
-      Uri.parse('$urlStart/api/v1/lessons/'),
+  final response = await get(Uri.parse('$urlStart/api/v1/lessons/'),
       headers: {'Authorization': "Token $token"});
   return response;
 }
 
 Future<Response> getLesson(int lessonId) async {
   final token = await getToken();
-  final response = await get(
-      Uri.parse('$urlStart/api/v1/lessons/$lessonId/'),
+  final response = await get(Uri.parse('$urlStart/api/v1/lessons/$lessonId/'),
       headers: {'Authorization': "Token $token"});
   return response;
 }
 
-Future<Response> addLesson(
-    String lesson_title,String lessonType,String color,String place,String date,int group_id,String time) async {
+Future<Response> addLesson(String lesson_title, String lessonType, String color,
+    String place, String date, int group_id, String time) async {
   final body = {
-    'lesson_title':lesson_title,
-    'place':place,
-    'group_id':group_id,
-    'date':'$date $time',
-    'lesson_type':'$lessonType~$color'
+    'lesson_title': lesson_title,
+    'place': place,
+    'group_id': group_id,
+    'date': '$date $time',
+    'lesson_type': '$lessonType~$color'
   };
   final token = await getToken();
   final jsonString = json.encode(body);
-  final response = await post(
-      Uri.parse(
-          '$urlStart/api/v1/lessons/'),
-      body: jsonString,
-      headers: {
-        'Authorization': "Token $token",
-        'Content-Type': 'application/json',
-        'charset': 'UTF-8',
-      });
-  return response;
-}
-Future<Response> editLesson(
-    String lesson_title,String lessonType,String color,String place,String date,int group_id,String time,int lessonId) async {
-  final body = {
-    'lesson_title':lesson_title,
-    'place':place,
-    'group_id':group_id,
-    'date':'$date $time',
-    'lesson_type':'$lessonType~$color'
-  };
-  final token = await getToken();
-  final jsonString = json.encode(body);
-  final response = await put(
-      Uri.parse(
-          '$urlStart/api/v1/lessons/$lessonId/'),
+  final response = await post(Uri.parse('$urlStart/api/v1/lessons/'),
       body: jsonString,
       headers: {
         'Authorization': "Token $token",
@@ -444,16 +386,39 @@ Future<Response> editLesson(
   return response;
 }
 
-Future<Response> editLessonGroupInfo(
-    String groupInfo,int lessonId) async {
+Future<Response> editLesson(
+    String lesson_title,
+    String lessonType,
+    String color,
+    String place,
+    String date,
+    int group_id,
+    String time,
+    int lessonId) async {
   final body = {
-    "group_info":groupInfo
+    'lesson_title': lesson_title,
+    'place': place,
+    'group_id': group_id,
+    'date': '$date $time',
+    'lesson_type': '$lessonType~$color'
   };
   final token = await getToken();
   final jsonString = json.encode(body);
-  final response = await put(
-      Uri.parse(
-          '$urlStart/api/v1/lessons/$lessonId/'),
+  final response = await put(Uri.parse('$urlStart/api/v1/lessons/$lessonId/'),
+      body: jsonString,
+      headers: {
+        'Authorization': "Token $token",
+        'Content-Type': 'application/json',
+        'charset': 'UTF-8',
+      });
+  return response;
+}
+
+Future<Response> editLessonGroupInfo(String groupInfo, int lessonId) async {
+  final body = {"group_info": groupInfo};
+  final token = await getToken();
+  final jsonString = json.encode(body);
+  final response = await put(Uri.parse('$urlStart/api/v1/lessons/$lessonId/'),
       body: jsonString,
       headers: {
         'Authorization': "Token $token",
@@ -464,15 +429,12 @@ Future<Response> editLessonGroupInfo(
 }
 
 Future<Response> deleteLesson(int id) async {
-
   final token = await getToken();
-  final response = await delete(
-      Uri.parse(
-          '$urlStart/api/v1/lessons/$id/'),
-      headers: {
-        'Authorization': "Token $token",
-        'Content-Type': 'application/json',
-        'charset': 'UTF-8',
-      });
+  final response =
+      await delete(Uri.parse('$urlStart/api/v1/lessons/$id/'), headers: {
+    'Authorization': "Token $token",
+    'Content-Type': 'application/json',
+    'charset': 'UTF-8',
+  });
   return response;
 }

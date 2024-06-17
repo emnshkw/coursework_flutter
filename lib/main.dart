@@ -5,23 +5,21 @@ import 'package:flutter/services.dart';
 import 'package:coursework/pages/auth_page.dart';
 import 'package:coursework/pages/landing_page.dart';
 
-
-MaterialApp MyApp(){
+MaterialApp MyApp() {
   return MaterialApp(
     theme: ThemeData(
-        fontFamily: 'Ubuntu',
-        primaryColor: Color(0xff00275E),
-        colorScheme: const ColorScheme.light(
-          primary: Color(0xff00275E),
-        ),
-        scrollbarTheme: ScrollbarThemeData(
-            thumbVisibility: MaterialStateProperty.all(true),
-            thickness: MaterialStateProperty.all(7),
-            thumbColor: MaterialStateProperty.all(const Color(0xff4e94bf)),
-            radius: const Radius.circular(10),
-            minThumbLength: 100),
+      fontFamily: 'Ubuntu',
+      primaryColor: Color(0xff00275E),
+      colorScheme: const ColorScheme.light(
+        primary: Color(0xff00275E),
+      ),
+      scrollbarTheme: ScrollbarThemeData(
+          thumbVisibility: MaterialStateProperty.all(true),
+          thickness: MaterialStateProperty.all(7),
+          thumbColor: MaterialStateProperty.all(const Color(0xff4e94bf)),
+          radius: const Radius.circular(10),
+          minThumbLength: 100),
     ),
-
     localizationsDelegates: const [
       GlobalMaterialLocalizations.delegate,
       GlobalWidgetsLocalizations.delegate,
@@ -31,15 +29,11 @@ MaterialApp MyApp(){
       Locale('ru', 'RU'),
     ],
     initialRoute: '/landing',
-    routes: {
-      '/landing':(context) => LandingPage()
-    },
+    routes: {'/landing': (context) => LandingPage()},
   );
 }
 
-
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   // Step 3
   SystemChrome.setPreferredOrientations([
@@ -49,5 +43,4 @@ void main() async {
   // runApp(MyApp());
 
   runApp(MyApp());
-
 }

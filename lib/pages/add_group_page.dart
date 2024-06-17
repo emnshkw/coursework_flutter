@@ -13,21 +13,22 @@ class AddGroupPage extends StatefulWidget {
   Map tableData;
   bool created;
   String id;
+
   AddGroupPage(this.groupMarksText, this.groupNameText, this.groupNumberText,
-      this.tableData,
-      this.created,this.id);
+      this.tableData, this.created, this.id);
 
   @override
   State<AddGroupPage> createState() => _AddGroupPageState(
-      groupNumberText, groupNameText, groupMarksText, tableData, created,id);
+      groupNumberText, groupNameText, groupMarksText, tableData, created, id);
 }
 
 class _AddGroupPageState extends State<AddGroupPage> {
   late Map tableData;
   late bool created;
   late String id;
+
   _AddGroupPageState(String groupNumberText1, String groupNameText1,
-      String groupMarksText1, Map tableData1, bool created1,String id1) {
+      String groupMarksText1, Map tableData1, bool created1, String id1) {
     groupNumberController.text = groupNumberText1;
     groupNameController.text = groupNameText1;
     groupMarksController.text = groupMarksText1;
@@ -161,7 +162,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
               }
               if (created == true) {
                 editGroup(groupNumberController.text, groupNameController.text,
-                        groupMarksController.text, students.join('\n'),id)
+                        groupMarksController.text, students.join('\n'), id)
                     .then((response) {
                   Map<String, dynamic> data = convert_response_to_map(response);
                   if (data['status'] == 'success') {
@@ -236,11 +237,47 @@ class _AddGroupPageState extends State<AddGroupPage> {
       ),
       body: Column(
         children: [
-          Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Номер группы',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: convert_px_to_adapt_height(15),
+                  left: convert_px_to_adapt_width(5)),
+              child: Text(
+                'Номер группы',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
           input(groupNumberController, "Введите номер группы"),
-          Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Название',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: convert_px_to_adapt_height(15),
+                  left: convert_px_to_adapt_width(5)),
+              child: Text(
+                'Название',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
           input(groupNameController, "Введите название группы"),
-          Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Примечание',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: convert_px_to_adapt_height(15),
+                  left: convert_px_to_adapt_width(5)),
+              child: Text(
+                'Примечание',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
           input(groupMarksController, "Введите примечания к группе"),
           Padding(
               padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(20))),
@@ -261,7 +298,9 @@ class _AddGroupPageState extends State<AddGroupPage> {
                         groupNumberController.text,
                         groupNameController.text,
                         groupMarksController.text,
-                        tableData,created,id),
+                        tableData,
+                        created,
+                        id),
                     transitionDuration: Duration(milliseconds: 300),
                     transitionsBuilder: (_, a, __, c) =>
                         FadeTransition(opacity: a, child: c),

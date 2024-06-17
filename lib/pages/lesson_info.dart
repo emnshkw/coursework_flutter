@@ -25,37 +25,35 @@ class _LessonTablePageState extends State<LessonTablePage> {
     lessonId = lessonId1;
     rows = [];
     tableData = {};
-    getLesson(lessonId).then((response){
-      Map<String,dynamic> lessonData = convert_response_to_map(response)['lesson'][0];
+    getLesson(lessonId).then((response) {
+      Map<String, dynamic> lessonData =
+          convert_response_to_map(response)['lesson'][0];
       String groupInfo = lessonData['group_info'];
       int iteration = 0;
-      for (String student in groupInfo.split('\n')){
+      for (String student in groupInfo.split('\n')) {
         List<String> studentInfo = student.split('~');
         String fio = studentInfo[0];
         String isHere = studentInfo[1];
         String point = studentInfo[2];
         String marks = studentInfo[3];
         rows.add({
-          "row":iteration,
-          "fio":fio,
-          'isHere':isHere,
-          'point':point,
-          'marks':marks
+          "row": iteration,
+          "fio": fio,
+          'isHere': isHere,
+          'point': point,
+          'marks': marks
         });
         tableData[iteration] = {
-          "row":iteration,
-          "fio":fio,
-          'isHere':isHere,
-          'point':point,
-          'marks':marks
+          "row": iteration,
+          "fio": fio,
+          'isHere': isHere,
+          'point': point,
+          'marks': marks
         };
         iteration++;
       }
-      setState(() {
-
-      });
+      setState(() {});
     });
-
   }
 
   double convert_px_to_adapt_width(double px) {
@@ -65,7 +63,6 @@ class _LessonTablePageState extends State<LessonTablePage> {
   double convert_px_to_adapt_height(double px) {
     return MediaQuery.of(context).size.height / 852 * px;
   }
-
 
   List? getRows() {
     return _editableKey.currentState?.rows;
@@ -85,10 +82,9 @@ class _LessonTablePageState extends State<LessonTablePage> {
     if (editedRows!.isNotEmpty) {
       for (int i = 0; i < editedRows.length; i++) {
         Map<dynamic, dynamic> row = editedRows[i];
-        for(var editedKey in row.keys){
+        for (var editedKey in row.keys) {
           tableData[row['row']][editedKey] = row[editedKey];
         }
-
       }
     }
     List<Map<dynamic, dynamic>> clearData = [];
@@ -112,21 +108,21 @@ class _LessonTablePageState extends State<LessonTablePage> {
     {"title": 'Примечание', 'widthFactor': 0.4, 'key': 'marks'},
   ];
 
-  void saveTable(){
+  void saveTable() {
     updateTableData();
     List<String> students = [];
     print(tableData);
-    for (int row in tableData.keys){
-      Map<String,dynamic> studentInfo = tableData[row];
-      String fio = studentInfo['fio'].replaceAll('~','');
-      String isHere = studentInfo['isHere'].replaceAll('~','');
-      String point = studentInfo['point'].replaceAll('~','');
-      String marks = studentInfo['marks'].replaceAll('~','');
+    for (int row in tableData.keys) {
+      Map<String, dynamic> studentInfo = tableData[row];
+      String fio = studentInfo['fio'].replaceAll('~', '');
+      String isHere = studentInfo['isHere'].replaceAll('~', '');
+      String point = studentInfo['point'].replaceAll('~', '');
+      String marks = studentInfo['marks'].replaceAll('~', '');
       students.add('$fio~$isHere~$point~$marks');
     }
-    editLessonGroupInfo(students.join('\n'), lessonId).then((response){
-      Map<String,dynamic> data = convert_response_to_map(response);
-      if (data['status'] == 'success'){
+    editLessonGroupInfo(students.join('\n'), lessonId).then((response) {
+      Map<String, dynamic> data = convert_response_to_map(response);
+      if (data['status'] == 'success') {
         Navigator.of(context).pop();
         Navigator.push(
           context,

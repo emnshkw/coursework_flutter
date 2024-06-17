@@ -24,8 +24,9 @@ class _LessonPageState extends State<LessonPage> {
 
   _LessonPageState(int lessonId1) {
     lessonId = lessonId1;
-    getLesson(lessonId).then((response){
-      Map<String,dynamic> lessonData = convert_response_to_map(response)['lesson'][0];
+    getLesson(lessonId).then((response) {
+      Map<String, dynamic> lessonData =
+          convert_response_to_map(response)['lesson'][0];
       updateFields(lessonData);
     });
   }
@@ -45,7 +46,7 @@ class _LessonPageState extends State<LessonPage> {
         onPressed: () {
           Navigator.of(context).pop();
           groupController.text =
-          '${groupInfo['group_number']} (${groupInfo['group_name']})';
+              '${groupInfo['group_number']} (${groupInfo['group_name']})';
           selectedGroupId = groupInfo['id'];
         },
         child: Container(
@@ -130,7 +131,7 @@ class _LessonPageState extends State<LessonPage> {
                     if (snapshot.hasData &&
                         snapshot.connectionState == ConnectionState.done) {
                       Map<String, dynamic> data =
-                      convert_snapshot_to_map(snapshot);
+                          convert_snapshot_to_map(snapshot);
                       if (data['status'] == 'failed') {
                         return Center(
                           child: Text(
@@ -222,7 +223,7 @@ class _LessonPageState extends State<LessonPage> {
                     if (snapshot.hasData &&
                         snapshot.connectionState == ConnectionState.done) {
                       Map<String, dynamic> data =
-                      convert_snapshot_to_map(snapshot);
+                          convert_snapshot_to_map(snapshot);
                       if (data['status'] == 'failed') {
                         return Center(
                           child: Text(
@@ -238,7 +239,7 @@ class _LessonPageState extends State<LessonPage> {
                       }
                       if (data['status'] == 'success') {
                         List<dynamic> lessonTypes =
-                        data['lesson_types'].split('\n');
+                            data['lesson_types'].split('\n');
                         List<Widget> typesWidgets = [];
                         for (String lessontType in lessonTypes) {
                           print(lessontType);
@@ -316,7 +317,7 @@ class _LessonPageState extends State<LessonPage> {
                       addLessonType(newLessonTypeController.text, newColorCode)
                           .then((response) {
                         Map<String, dynamic> data =
-                        convert_response_to_map(response);
+                            convert_response_to_map(response);
                         if (data['status'] == 'success') {
                           setState(() {
                             Navigator.of(context).pop();
@@ -597,22 +598,23 @@ class _LessonPageState extends State<LessonPage> {
     );
   }
 
-  void updateFields(Map<String,dynamic> lessonData){
+  void updateFields(Map<String, dynamic> lessonData) {
     lessonTitleController.text = lessonData['lesson_title'];
     typeController.text = lessonData['lesson_type'].split('~')[0];
     newColorCode = lessonData['lesson_type'].split('~')[1];
     place.text = lessonData['place'];
     selectedGroupId = lessonData['group_id'];
-    groupController.text = '${lessonData['group_number']} (${lessonData['group_name']})';
+    groupController.text =
+        '${lessonData['group_number']} (${lessonData['group_name']})';
     timeController.text = lessonData['date'].split(' ')[1];
     date = convertStringToDateTime(lessonData['date'].split(' ')[0]);
     dateController.text = lessonData['date'].split(' ')[0];
   }
 
-  Widget showTableBtn(){
+  Widget showTableBtn() {
     return Container(
       child: ElevatedButton(
-        onPressed: (){
+        onPressed: () {
           Navigator.push(
             context,
             PageRouteBuilder(
@@ -623,7 +625,10 @@ class _LessonPageState extends State<LessonPage> {
             ),
           );
         },
-        child: Text('Контроль посещаемости',style: TextStyle(color: Colors.white),),
+        child: Text(
+          'Контроль посещаемости',
+          style: TextStyle(color: Colors.white),
+        ),
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(0xff00275E),
         ),
@@ -643,6 +648,7 @@ class _LessonPageState extends State<LessonPage> {
   String newColorCode = '0xff00275E';
   int selectedGroupId = 0;
   bool dataLoaded = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -709,13 +715,14 @@ class _LessonPageState extends State<LessonPage> {
             return;
           }
           editLesson(
-              lessonTitleController.text,
-              typeController.text,
-              newColorCode,
-              place.text,
-              dateController.text,
-              selectedGroupId,
-              timeController.text.replaceAll(' ', ''),lessonId)
+                  lessonTitleController.text,
+                  typeController.text,
+                  newColorCode,
+                  place.text,
+                  dateController.text,
+                  selectedGroupId,
+                  timeController.text.replaceAll(' ', ''),
+                  lessonId)
               .then((response) {
             Map<String, dynamic> data = convert_response_to_map(response);
             if (data['status'] == 'success') {
@@ -754,22 +761,98 @@ class _LessonPageState extends State<LessonPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Название',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: convert_px_to_adapt_height(15),
+                    left: convert_px_to_adapt_width(5)),
+                child: Text(
+                  'Название',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
             input(lessonTitleController, 'Введите название предмета'),
-            Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Тип занятия',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: convert_px_to_adapt_height(15),
+                    left: convert_px_to_adapt_width(5)),
+                child: Text(
+                  'Тип занятия',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
             typePicker(typeController, 'Выберите тип занятия'),
-            Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Место проведения',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: convert_px_to_adapt_height(15),
+                    left: convert_px_to_adapt_width(5)),
+                child: Text(
+                  'Место проведения',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
             input(place, 'Введите место проведения занятия'),
-            Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Время',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: convert_px_to_adapt_height(15),
+                    left: convert_px_to_adapt_width(5)),
+                child: Text(
+                  'Время',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
             input(timeController,
                 'Введите время (формат: ХХ:ХХ - ХХ:ХХ)\nИли выберите ниже'),
-            Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(15))),
+            Padding(
+                padding:
+                    EdgeInsets.only(bottom: convert_px_to_adapt_height(15))),
             times(),
-            Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Группа',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: convert_px_to_adapt_height(15),
+                    left: convert_px_to_adapt_width(5)),
+                child: Text(
+                  'Группа',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
             groupPicker(groupController, 'Выберите группу'),
-            Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Дата',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: convert_px_to_adapt_height(15),
+                    left: convert_px_to_adapt_width(5)),
+                child: Text(
+                  'Дата',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
             datePicker(dateController, 'Выберите дату'),
-            Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(15))),
+            Padding(
+                padding:
+                    EdgeInsets.only(bottom: convert_px_to_adapt_height(15))),
             showTableBtn()
           ],
         ),

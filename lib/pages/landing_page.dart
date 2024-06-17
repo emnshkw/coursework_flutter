@@ -40,6 +40,7 @@ class LandingPage extends StatelessWidget {
       }
       return token;
     }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -72,8 +73,8 @@ class LandingPage extends StatelessWidget {
                                 Padding(
                                     padding: EdgeInsets.only(
                                         top:
-                                        MediaQuery.of(context).size.height /
-                                            2.5)),
+                                            MediaQuery.of(context).size.height /
+                                                2.5)),
                                 Text(
                                   "Журнал-онлайн",
                                   style: TextStyle(
@@ -84,7 +85,7 @@ class LandingPage extends StatelessWidget {
                                 Padding(
                                     padding: EdgeInsets.only(
                                         bottom:
-                                        convert_px_to_adapt_height(20))),
+                                            convert_px_to_adapt_height(20))),
                                 Padding(
                                   padding: EdgeInsets.only(
                                       left: convert_px_to_adapt_width(26),
@@ -95,14 +96,14 @@ class LandingPage extends StatelessWidget {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize:
-                                        convert_px_to_adapt_height(20),
+                                            convert_px_to_adapt_height(20),
                                         color: Color(0xff00275E)),
                                   ),
                                 ),
                                 Padding(
                                     padding: EdgeInsets.only(
                                         bottom:
-                                        convert_px_to_adapt_height(30))),
+                                            convert_px_to_adapt_height(30))),
                                 ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
@@ -111,7 +112,7 @@ class LandingPage extends StatelessWidget {
                                           pageBuilder: (_, __, ___) =>
                                               LandingPage(),
                                           transitionDuration:
-                                          Duration(milliseconds: 300),
+                                              Duration(milliseconds: 300),
                                           transitionsBuilder: (_, a, __, c) =>
                                               FadeTransition(
                                                   opacity: a, child: c),
@@ -150,8 +151,8 @@ class LandingPage extends StatelessWidget {
                                 Padding(
                                     padding: EdgeInsets.only(
                                         top:
-                                        MediaQuery.of(context).size.height /
-                                            2.5)),
+                                            MediaQuery.of(context).size.height /
+                                                2.5)),
                                 Text(
                                   "Журнал-мобайл",
                                   style: TextStyle(
@@ -170,7 +171,7 @@ class LandingPage extends StatelessWidget {
                                 Padding(
                                     padding: EdgeInsets.only(
                                         bottom:
-                                        convert_px_to_adapt_height(30))),
+                                            convert_px_to_adapt_height(30))),
                               ],
                             ),
                           );

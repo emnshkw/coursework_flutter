@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:coursework/file_storage.dart';
 
-
-String convertDateTimeToString(DateTime date){
+String convertDateTimeToString(DateTime date) {
   var year = date.year;
   var month = date.month.toString();
   if (month.length == 1) {
@@ -14,56 +13,51 @@ String convertDateTimeToString(DateTime date){
     day = '0$day';
   }
   String converted = '$day.$month.$year';
-return converted;
+  return converted;
 }
 
-DateTime convertStringToDateTime(String date){
+DateTime convertStringToDateTime(String date) {
   int year = int.parse(date.split('.')[2]);
   int month = int.parse(date.split('.')[1]);
   int day = int.parse(date.split('.')[0]);
-  return DateTime(year,month,day);
+  return DateTime(year, month, day);
 }
 
-String validateTime(String time){
+String validateTime(String time) {
   try {
     String start = time.split('-')[0];
     String end = time.split('-')[1];
-    try{
-      DateTime startTime = DateTime(2024,1,1,int.parse(start.split(':')[0]),int.parse(start.split(':')[1]));
-      try{
-        DateTime endTime = DateTime(2024,1,1,int.parse(end.split(':')[0]),int.parse(end.split(':')[1]));
-        if (startTime.isAfter(endTime) || startTime.isAtSameMomentAs(endTime)){
+    try {
+      DateTime startTime = DateTime(2024, 1, 1, int.parse(start.split(':')[0]),
+          int.parse(start.split(':')[1]));
+      try {
+        DateTime endTime = DateTime(2024, 1, 1, int.parse(end.split(':')[0]),
+            int.parse(end.split(':')[1]));
+        if (startTime.isAfter(endTime) || startTime.isAtSameMomentAs(endTime)) {
           return "Время указано неправильно! Конец занятия должен быть после начала";
-        }
-        else{
+        } else {
           return "success";
         }
-      }
-      catch(e){
+      } catch (e) {
         return "Время конца занятия указано неправильно. Следуйте указанному формату\n(формат \"XX:XX - XX:XX\")";
       }
-    }
-    catch(e){
+    } catch (e) {
       return "Время начала занятия указано неправильно. Следуйте указанному формату\n(формат \"XX:XX - XX:XX\"";
     }
-  }
-  catch(e){
+  } catch (e) {
     return "Время указано неверно. Разделите его с помощью \"-\"";
   }
   return '';
 }
 
-
-void addItemsToProfile(
-    String key,String value) {
+void addItemsToProfile(String key, String value) {
   final storage = LocalStorage('profile_storage');
   storage.setItem(key, value);
 }
 
-String getItemFromProfile(String key){
+String getItemFromProfile(String key) {
   return LocalStorage('profile_storage').getItem(key);
 }
-
 
 void addItemsToFavourite(
     String logo_link,
@@ -116,10 +110,11 @@ void deleteItemFromFavourite(
       break;
     }
     index = index + 1;
-  };
+  }
+  ;
 }
 
-List<String> getAllItems(){
+List<String> getAllItems() {
   final storage = LocalStorage('favourite_storage');
   List<String> items = [];
   int index = 0;
@@ -128,12 +123,10 @@ List<String> getAllItems(){
     var data = storage.getItem(index.toString());
     if (data == null) {
       break;
-    }
-    else{
+    } else {
       if (!items.contains(data)) {
         items.add(data);
-      }
-      else{
+      } else {
         List<String> place = data.split('~');
         String logo_link = place[0];
         String title = place[1];
@@ -142,14 +135,15 @@ List<String> getAllItems(){
         String background_image_link = place[4];
         String id = place[5];
         String urlAfter = place[6];
-        deleteItemFromFavourite(logo_link, title, address, work_time, background_image_link, id, urlAfter);
+        deleteItemFromFavourite(logo_link, title, address, work_time,
+            background_image_link, id, urlAfter);
       }
     }
     index = index + 1;
-  };
+  }
+  ;
   return items;
 }
-
 
 void updateItem(
     String logo_link,
@@ -158,19 +152,18 @@ void updateItem(
     String work_time,
     String background_image_link,
     String id,
-    String urlAfter){
-  List<String> items=[];
-  String place = '$logo_link~$title~$address~$work_time~$background_image_link~$id~$urlAfter';
-  FileStorage.read().then((value){
+    String urlAfter) {
+  List<String> items = [];
+  String place =
+      '$logo_link~$title~$address~$work_time~$background_image_link~$id~$urlAfter';
+  FileStorage.read().then((value) {
     items = value.split('\n');
-    if (items.contains(place)){
+    if (items.contains(place)) {
       items.remove(place);
       FileStorage.writeCounter(items.join('\n'), 'favourites.txt');
-    }
-    else{
+    } else {
       items.add(place);
       FileStorage.writeCounter(items.join('\n'), 'favourites.txt');
     }
   });
 }
-

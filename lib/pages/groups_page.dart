@@ -18,50 +18,57 @@ class _MainChooseState extends State<GroupsPage> {
     return MediaQuery.of(context).size.height / 852 * px;
   }
 
-  void acceptDelete(int id){
-    showDialog(context: context, builder: (BuildContext context){
-      return AlertDialog(
-        title: Text('Вы уверены, что хотите удалить группу?'),
-        content: SizedBox(
-          height: convert_px_to_adapt_height(40),
-        ),
-        actions: [
-          ElevatedButton(style:ElevatedButton.styleFrom(
-            backgroundColor: Color(0xff00275E)
-          ),onPressed: (){
-            deleteGroup(id).then((response){
-              Map<String,dynamic> data = convert_response_to_map(response);
-              if (data['status'] == 'success'){
-                setState(() {
-                  Fluttertoast.showToast(
-                      msg: data['message'],
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 15,
-                      backgroundColor: Colors.green,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-                });
-              }
-              else{
-                Fluttertoast.showToast(
-                    msg: data['message'],
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 15,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-              }
-            });
-            Navigator.of(context).pop();
-          }, child: Text('Подтвердить',style:TextStyle(color: Colors.white))),
-          ElevatedButton(style:ElevatedButton.styleFrom(
-            backgroundColor: Color(0xff00275E)
-          ),onPressed: (){}, child: Text('Отмена',style:TextStyle(color: Colors.white))),
-        ],
-      );
-    });
+  void acceptDelete(int id) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Вы уверены, что хотите удалить группу?'),
+            content: SizedBox(
+              height: convert_px_to_adapt_height(40),
+            ),
+            actions: [
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff00275E)),
+                  onPressed: () {
+                    deleteGroup(id).then((response) {
+                      Map<String, dynamic> data =
+                          convert_response_to_map(response);
+                      if (data['status'] == 'success') {
+                        setState(() {
+                          Fluttertoast.showToast(
+                              msg: data['message'],
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 15,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        });
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: data['message'],
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 15,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      }
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Подтвердить',
+                      style: TextStyle(color: Colors.white))),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff00275E)),
+                  onPressed: () {},
+                  child: Text('Отмена', style: TextStyle(color: Colors.white))),
+            ],
+          );
+        });
   }
 
   ElevatedButton groupButton(Map<String, dynamic> groupInfo) {
@@ -101,18 +108,23 @@ class _MainChooseState extends State<GroupsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width/1.5,
+                width: MediaQuery.of(context).size.width / 1.5,
                 alignment: Alignment.centerLeft,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('${groupInfo['group_number']} (${groupInfo['group_name']})',textAlign: TextAlign.center,),
+                    Text(
+                      '${groupInfo['group_number']} (${groupInfo['group_name']})',
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),
-              IconButton(onPressed: (){
-                acceptDelete(groupInfo['id']);
-              }, icon: Icon(Icons.delete))
+              IconButton(
+                  onPressed: () {
+                    acceptDelete(groupInfo['id']);
+                  },
+                  icon: Icon(Icons.delete))
             ],
           ),
         ));

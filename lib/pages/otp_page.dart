@@ -109,11 +109,12 @@ class _OtpPageState extends State<OtpPage> {
               LengthLimitingTextInputFormatter(4),
             ],
             style: TextStyle(
-                fontSize: convert_px_to_adapt_height(25), color: Color(0xff00275E)),
+                fontSize: convert_px_to_adapt_height(25),
+                color: Color(0xff00275E)),
             decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderRadius:
-                  BorderRadius.circular(convert_px_to_adapt_width(20)),
+                      BorderRadius.circular(convert_px_to_adapt_width(20)),
                   borderSide: BorderSide(
                       color: Color(0xff00275E),
                       width: convert_px_to_adapt_width(0)),
@@ -127,31 +128,36 @@ class _OtpPageState extends State<OtpPage> {
     );
   }
 
-  Padding acceptBtn(){
-    return Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(50)),child: ElevatedButton(
-        onPressed: () {
-          data['code'] = _otpController.text;
-          setState(() {
-            submitted = true;
-          });
-        },
-        child: Text(
-          'Подтвердить',
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: convert_px_to_adapt_height(17)),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xff00275E),
-          foregroundColor: Color(0xff333450),
-          fixedSize: Size(
-              convert_px_to_adapt_width(230), convert_px_to_adapt_height(60)),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(convert_px_to_adapt_width(20)),
+  Padding acceptBtn() {
+    return Padding(
+      padding: EdgeInsets.only(top: convert_px_to_adapt_height(50)),
+      child: ElevatedButton(
+          onPressed: () {
+            data['code'] = _otpController.text;
+            setState(() {
+              submitted = true;
+            });
+          },
+          child: Text(
+            'Подтвердить',
+            style: TextStyle(
+                color: Colors.white, fontSize: convert_px_to_adapt_height(17)),
           ),
-        )),);
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xff00275E),
+            foregroundColor: Color(0xff333450),
+            fixedSize: Size(
+                convert_px_to_adapt_width(230), convert_px_to_adapt_height(60)),
+            shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(convert_px_to_adapt_width(20)),
+            ),
+          )),
+    );
   }
+
   bool submitted = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,77 +180,76 @@ class _OtpPageState extends State<OtpPage> {
           Container(
             child: acceptBtn(),
           ),
-          submitted ?
-          FutureBuilder(
-              future: try_to_register(data), builder: (BuildContext context, AsyncSnapshot snapshot){
-            if (snapshot.hasData){
-              Map <String, dynamic> response_data = jsonDecode(utf8.decode(snapshot.data.bodyBytes));
+          submitted
+              ? FutureBuilder(
+                  future: try_to_register(data),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      Map<String, dynamic> response_data =
+                          jsonDecode(utf8.decode(snapshot.data.bodyBytes));
 
-              if (response_data['status'].toLowerCase() == 'success') {
-                Fluttertoast.showToast(
-                    msg: 'Успешно!',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 15,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.white,
-                    fontSize: 16.0
-                );
-                saveToken(response_data['message']);
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => LandingPage(),
-                    transitionDuration: Duration(milliseconds: 300),
-                    transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
-                  ),
-                );
-              }
-              else{
-                Fluttertoast.showToast(
-                    msg: '${response_data['message']}',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 15,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                    fontSize: 16.0
-                );
-                submitted = false;
-              }
-              return Text('');
-            }
-            else{
-              if (snapshot.hasError){
-                Fluttertoast.showToast(
-                    msg: 'Что-то пошло не так!',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 15,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.white,
-                    fontSize: 16.0
-                );
-                submitted = false;
-                _otpController.text = '';
-              }
-              if (!snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-                Fluttertoast.showToast(
-                    msg: 'Что-то пошло не так!\nПроверьте подключение к интернету.',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 15,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.white,
-                    fontSize: 16.0
-                );
-                submitted = false;
-                _otpController.text = '';
-              }
-              return LinearProgressIndicator();
-            }
-          }
-          ) : Text('')
+                      if (response_data['status'].toLowerCase() == 'success') {
+                        Fluttertoast.showToast(
+                            msg: 'Успешно!',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 15,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        saveToken(response_data['message']);
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => LandingPage(),
+                            transitionDuration: Duration(milliseconds: 300),
+                            transitionsBuilder: (_, a, __, c) =>
+                                FadeTransition(opacity: a, child: c),
+                          ),
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: '${response_data['message']}',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 15,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        submitted = false;
+                      }
+                      return Text('');
+                    } else {
+                      if (snapshot.hasError) {
+                        Fluttertoast.showToast(
+                            msg: 'Что-то пошло не так!',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 15,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        submitted = false;
+                        _otpController.text = '';
+                      }
+                      if (!snapshot.hasData &&
+                          snapshot.connectionState == ConnectionState.done) {
+                        Fluttertoast.showToast(
+                            msg:
+                                'Что-то пошло не так!\nПроверьте подключение к интернету.',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 15,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        submitted = false;
+                        _otpController.text = '';
+                      }
+                      return LinearProgressIndicator();
+                    }
+                  })
+              : Text('')
         ],
       ),
     );

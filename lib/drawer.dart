@@ -49,7 +49,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       PageRouteBuilder(
                         pageBuilder: (_, __, ___) => LandingPage(),
                         transitionDuration: Duration(milliseconds: 300),
-                        transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+                        transitionsBuilder: (_, a, __, c) =>
+                            FadeTransition(opacity: a, child: c),
                       ),
                     );
                   },
@@ -88,25 +89,26 @@ class _CustomDrawerState extends State<CustomDrawer> {
               ),
               Container(
                 padding: EdgeInsets.only(
-                  top: convert_px_to_adapt_height(20),
+                    top: convert_px_to_adapt_height(20),
                     left: convert_px_to_adapt_width(11),
                     right: convert_px_to_adapt_width(11)),
                 child: Column(
                   children: [
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
                             pageBuilder: (_, __, ___) => MainPage(),
                             transitionDuration: Duration(milliseconds: 300),
-                            transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+                            transitionsBuilder: (_, a, __, c) =>
+                                FadeTransition(opacity: a, child: c),
                           ),
                         );
                       },
                       child: Padding(
-                        padding:
-                        EdgeInsets.only(left: convert_px_to_adapt_width(15)),
+                        padding: EdgeInsets.only(
+                            left: convert_px_to_adapt_width(15)),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -122,19 +124,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       color: Colors.white,
                     ),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
                             pageBuilder: (_, __, ___) => GroupsPage(),
                             transitionDuration: Duration(milliseconds: 300),
-                            transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+                            transitionsBuilder: (_, a, __, c) =>
+                                FadeTransition(opacity: a, child: c),
                           ),
                         );
                       },
                       child: Padding(
-                        padding:
-                        EdgeInsets.only(left: convert_px_to_adapt_width(15)),
+                        padding: EdgeInsets.only(
+                            left: convert_px_to_adapt_width(15)),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -150,19 +153,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       color: Colors.white,
                     ),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
                             pageBuilder: (_, __, ___) => ResultsPage(),
                             transitionDuration: Duration(milliseconds: 300),
-                            transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+                            transitionsBuilder: (_, a, __, c) =>
+                                FadeTransition(opacity: a, child: c),
                           ),
                         );
                       },
                       child: Padding(
-                        padding:
-                        EdgeInsets.only(left: convert_px_to_adapt_width(15)),
+                        padding: EdgeInsets.only(
+                            left: convert_px_to_adapt_width(15)),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -177,7 +181,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     Divider(
                       color: Colors.white,
                     ),
-
                   ],
                 ),
               ),
