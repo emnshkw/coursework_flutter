@@ -239,6 +239,84 @@ Future<Response> removeLessonName(String lessonName) async {
   return response;
 }
 
+Future<Response> getLessonResults() async {
+  final token = await getToken();
+  final response = await get(
+      Uri.parse('$urlStart/api/v1/lessons_to_results/'),
+      headers: {'Authorization': "Token $token"});
+  return response;
+}
+
+
+Future<Response> getResults(int id) async {
+  final token = await getToken();
+  final response = await get(
+      Uri.parse('$urlStart/api/v1/results/$id/'),
+      headers: {'Authorization': "Token $token"});
+  return response;
+}
+
+Future<Response> generateResults(int lessonId,int groupId,String lessonTitle) async {
+  final body = {
+    "lesson_id":lessonId,
+    "group_id":groupId,
+    "lesson_title":lessonTitle
+  };
+  final token = await getToken();
+  final jsonString = json.encode(body);
+  final response = await post(
+      Uri.parse(
+          '$urlStart/api/v1/results/'),
+      body: jsonString,
+      headers: {
+        'Authorization': "Token $token",
+        'Content-Type': 'application/json',
+        'charset': 'UTF-8',
+      });
+  return response;
+}
+
+Future<Response> updateResults(int lessonId,int groupId,String lessonTitle,int pk) async {
+  final body = {
+    "lesson_id":lessonId,
+    "group_id":groupId,
+    "lesson_title":lessonTitle
+  };
+  final token = await getToken();
+  final jsonString = json.encode(body);
+  final response = await post(
+      Uri.parse(
+          '$urlStart/api/v1/results/$pk/'),
+      body: jsonString,
+      headers: {
+        'Authorization': "Token $token",
+        'Content-Type': 'application/json',
+        'charset': 'UTF-8',
+      });
+  return response;
+}
+
+
+Future<Response> editResults(int id,String results,String resultsPoint) async {
+  final body = {
+    "result":results,
+    'result_points':resultsPoint
+  };
+  final token = await getToken();
+  final jsonString = json.encode(body);
+  final response = await put(
+      Uri.parse(
+          '$urlStart/api/v1/results/$id/'),
+      body: jsonString,
+      headers: {
+        'Authorization': "Token $token",
+        'Content-Type': 'application/json',
+        'charset': 'UTF-8',
+      });
+  return response;
+}
+
+
 Future<Response> getGroups() async {
   final token = await getToken();
   final response = await get(
@@ -269,6 +347,7 @@ Future<Response> addGroup(
       });
   return response;
 }
+
 Future<Response> editGroup(
     String groupNumber,String groupName,String groupMarks,String students,String id) async {
   final body = {

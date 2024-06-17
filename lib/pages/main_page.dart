@@ -290,11 +290,11 @@ class _MainPageState extends State<MainPage> {
                       color: !startWeek.isAtSameMomentAs(selectedDay)
                           ? Color(0xffE4E4E4)
                           : Colors.white,
-                      border: Border.all(
+                      border: startWeek.isAtSameMomentAs(selectedDay) ? Border.all(
                         color: Color(0xff00275E),
-                      ),
+                      ) : null,
                       borderRadius:
-                          BorderRadius.circular(convert_px_to_adapt_width(10))),
+                      BorderRadius.circular(convert_px_to_adapt_width(10))),
                   alignment: Alignment.center,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

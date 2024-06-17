@@ -296,6 +296,7 @@ class _AddLessonPageState extends State<AddLessonPage> {
             ],
             content: Column(
               children: [
+                Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Название',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
                 input(newLessonNameController, 'Введите название занятия')
               ],
             ),
@@ -542,7 +543,9 @@ class _AddLessonPageState extends State<AddLessonPage> {
             ],
             content: Column(
               children: [
+                Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Название',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
                 input(newLessonTypeController, 'Введите название типа занятия'),
+                Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Цвет',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
                 colorPicker(newColorController, 'Выберите цвет')
               ],
             ),
@@ -974,13 +977,19 @@ class _AddLessonPageState extends State<AddLessonPage> {
       ),
       body: Column(
         children: [
+          Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Название',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
           lessonNameInput(lessonTitleController, 'Выберите нужный предмет'),
+          Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Тип предмета',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
           typePicker(typeController, 'Выберите тип занятия'),
+          Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Место проведения',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
           input(place, 'Введите место проведения занятия'),
+          Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Время проведения',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
           input(timeController,
               'Введите время (формат: ХХ:ХХ - ХХ:ХХ)\nИли выберите ниже'),
           times(),
+          Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Группа',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
           groupPicker(groupController, 'Выберите группу'),
+          Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Дата',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
           datePicker(dateController, 'Выберите дату')
         ],
       ),

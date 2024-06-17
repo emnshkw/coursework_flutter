@@ -751,20 +751,28 @@ class _LessonPageState extends State<LessonPage> {
         child: Icon(Icons.check),
         backgroundColor: Color(0xff00275E),
       ),
-      body: Column(
-        children: [
-          input(lessonTitleController, 'Введите название предмета'),
-          typePicker(typeController, 'Выберите тип занятия'),
-          input(place, 'Введите место проведения занятия'),
-          input(timeController,
-              'Введите время (формат: ХХ:ХХ - ХХ:ХХ)\nИли выберите ниже'),
-          Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(15))),
-          times(),
-          groupPicker(groupController, 'Выберите группу'),
-          datePicker(dateController, 'Выберите дату'),
-          Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(15))),
-          showTableBtn()
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Название',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+            input(lessonTitleController, 'Введите название предмета'),
+            Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Тип занятия',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+            typePicker(typeController, 'Выберите тип занятия'),
+            Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Место проведения',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+            input(place, 'Введите место проведения занятия'),
+            Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Время',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+            input(timeController,
+                'Введите время (формат: ХХ:ХХ - ХХ:ХХ)\nИли выберите ниже'),
+            Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(15))),
+            times(),
+            Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Группа',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+            groupPicker(groupController, 'Выберите группу'),
+            Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Дата',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
+            datePicker(dateController, 'Выберите дату'),
+            Padding(padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(15))),
+            showTableBtn()
+          ],
+        ),
       ),
       backgroundColor: Colors.white,
     );

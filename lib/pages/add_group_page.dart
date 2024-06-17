@@ -113,7 +113,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
         backgroundColor: Color(0xff00275E),
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          'Добавление группы',
+          'Группа',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -236,8 +236,11 @@ class _AddGroupPageState extends State<AddGroupPage> {
       ),
       body: Column(
         children: [
+          Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Номер группы',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
           input(groupNumberController, "Введите номер группы"),
+          Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Название',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
           input(groupNameController, "Введите название группы"),
+          Align(alignment: Alignment.centerLeft,child: Padding(padding: EdgeInsets.only(top: convert_px_to_adapt_height(15),left: convert_px_to_adapt_width(5)),child: Text('Примечание',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),),
           input(groupMarksController, "Введите примечания к группе"),
           Padding(
               padding: EdgeInsets.only(bottom: convert_px_to_adapt_height(20))),
