@@ -15,7 +15,7 @@ class _AuthPageState extends State<AuthPage> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
-
+  _AuthPageState();
   double convert_px_to_adapt_width(double px) {
     return MediaQuery.of(context).size.width / 392 * px;
   }
@@ -89,6 +89,8 @@ class _AuthPageState extends State<AuthPage> {
         style: TextStyle(
             fontSize: convert_px_to_adapt_height(23), color: Color(0xff00275E)),
         decoration: InputDecoration(
+
+          contentPadding: EdgeInsets.only(bottom: convert_px_to_adapt_width(5),top: convert_px_to_adapt_width(5)),
           filled: true,
           fillColor: Colors.white,
           hintStyle: TextStyle(
@@ -135,6 +137,8 @@ class _AuthPageState extends State<AuthPage> {
         style: TextStyle(
             fontSize: convert_px_to_adapt_height(23), color: Color(0xff00275E)),
         decoration: InputDecoration(
+
+            contentPadding: EdgeInsets.only(bottom: convert_px_to_adapt_width(5),top: convert_px_to_adapt_width(5)),
             filled: true,
             fillColor: Colors.white,
             hintStyle: TextStyle(
@@ -199,12 +203,14 @@ class _AuthPageState extends State<AuthPage> {
       child: TextField(
         keyboardType: keyboardType,
         controller: controller,
+        maxLines: 1,
         style: TextStyle(
             fontSize: convert_px_to_adapt_height(23), color: Colors.black),
         decoration: InputDecoration(
             // labelStyle: TextStyle(
             //   color: Color(0xff00275E)
             // ),
+          contentPadding: EdgeInsets.only(bottom: convert_px_to_adapt_width(5),top: convert_px_to_adapt_width(5)),
             filled: true,
             fillColor: Colors.white,
             hintStyle: TextStyle(

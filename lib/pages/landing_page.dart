@@ -1,4 +1,8 @@
 import 'dart:convert';
+import 'package:coursework/pages/login_page.dart';
+import 'package:coursework/pages/login_page.dart';
+import 'package:coursework/pages/start_page.dart';
+import 'package:coursework/pages/start_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:localstorage/localstorage.dart';
@@ -54,15 +58,14 @@ class LandingPage extends StatelessWidget {
               if (snapshot.data == '' ||
                   snapshot.data == 'null' ||
                   snapshot.data == null) {
-                return AuthPage();
+                return StartPage();
               } else {
                 // return MainChoose(snapshot.data);
                 print(token);
                 return FutureBuilder(
                     future: check_token(token),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData &&
-                          snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
                         try {
                           var data = jsonDecode(
                               utf8.decode(snapshot.data.bodyBytes).toString());
@@ -139,9 +142,10 @@ class LandingPage extends StatelessWidget {
                         if (success == true) {
                           addItemsToProfile('name', data['username']);
                           addItemsToProfile('phone', data['phone']);
+
                           return MainPage();
                         } else {
-                          return AuthPage();
+                          return StartPage();
                         }
                       } else {
                         if (snapshot.hasError) {

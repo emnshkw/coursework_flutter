@@ -19,13 +19,6 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // initFirebase();
-  }
-
   double convert_px_to_adapt_width(double px) {
     return MediaQuery.of(context).size.width / 392 * px;
   }
@@ -99,6 +92,8 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(
             fontSize: convert_px_to_adapt_height(23), color: Color(0xff00275E)),
         decoration: InputDecoration(
+
+          contentPadding: EdgeInsets.only(bottom: convert_px_to_adapt_width(5),top: convert_px_to_adapt_width(5)),
           filled: true,
           fillColor: Colors.white,
           hintStyle: TextStyle(
@@ -145,6 +140,7 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(
             fontSize: convert_px_to_adapt_height(23), color: Color(0xff00275E)),
         decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(bottom: convert_px_to_adapt_width(5),top: convert_px_to_adapt_width(5)),
             filled: true,
             fillColor: Colors.white,
             hintStyle: TextStyle(

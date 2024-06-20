@@ -4,6 +4,7 @@ import 'package:dynamic_table/dynamic_table.dart';
 import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
 import 'package:coursework/api.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ResultTablePage extends StatefulWidget {
   Map<String, dynamic> data;
@@ -23,7 +24,7 @@ class _ResultTablePageState extends State<ResultTablePage> {
     List<String> resultCols = result.removeAt(0).split('~');
     for (String col in resultCols) {
       if (col == 'ФИО') {
-        cols.add({"title": col, 'widthFactor': 0.4, 'key': col});
+        cols.add({"title": col, 'widthFactor': 0.7, 'key': col});
         continue;
       }
       if (col.contains('/')) {
@@ -132,7 +133,11 @@ class _ResultTablePageState extends State<ResultTablePage> {
       students.add(student.join('~'));
       results.add('${student[0]}~$result');
     }
-
+    List<String> colsList = [];
+    for (Map<String,dynamic> data in cols){
+      colsList.add(data['key']);
+    }
+    students.insert(0, colsList.join('~'));
     return {'result': students.join('\n'), 'result_point': results.join('\n')};
   }
 
@@ -161,7 +166,14 @@ class _ResultTablePageState extends State<ResultTablePage> {
           editResults(data['id'], results['result'], results['result_point'])
               .then((response) {
             Map<String, dynamic> data = convert_response_to_map(response);
-            print(data);
+            Fluttertoast.showToast(
+                msg: data['message'],
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 15,
+                backgroundColor: Color(0xff00275E),
+                textColor: Colors.white,
+                fontSize: 16.0);
           });
         },
         child: Icon(Icons.check),

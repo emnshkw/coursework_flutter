@@ -119,11 +119,11 @@ class _ResultsPageState extends State<ResultsPage> {
                   children: [
                     Text(
                       '${lessonInfo['group_number']} (${lessonInfo['group_name']})',
-                      textAlign: TextAlign.left,
+                      textAlign: TextAlign.center,
                     ),
                     Text(
                       '${lessonInfo['lesson_title']}'.replaceAll('\r', ''),
-                      textAlign: TextAlign.left,
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
@@ -180,7 +180,7 @@ class _ResultsPageState extends State<ResultsPage> {
                     lessonInfo['generated'] == false
                         ? 'Сгенерировать'
                         : "Обновить сводку",
-                    textAlign: TextAlign.left,
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
@@ -230,6 +230,7 @@ class _ResultsPageState extends State<ResultsPage> {
                 if (snapshot.hasData &&
                     snapshot.connectionState == ConnectionState.done) {
                   Map<String, dynamic> data = convert_snapshot_to_map(snapshot);
+                  print(data);
                   if (data['status'] == 'success') {
                     List<dynamic> lessons = data['lessons'];
                     List<Widget> lessonButtons = [];
@@ -257,6 +258,7 @@ class _ResultsPageState extends State<ResultsPage> {
                     ],
                   );
                 }
+                print(snapshot);
                 return Column(
                   children: [
                     Padding(
